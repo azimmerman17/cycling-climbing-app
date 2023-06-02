@@ -13,7 +13,8 @@ def create_app(config_class=Config):
 
 
   # Register blueprints here
-
+  from app.strava_auth import bp as strava_auth_bp
+  app.register_blueprint(strava_auth_bp)
 
   @app.route('/test')
   def test_page():
