@@ -6,7 +6,7 @@ class JsonModel(object):
   def as_dict(self):
     return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
-class User(db.Model, JsonModel):
+class Strava_User(db.Model, JsonModel):
   strava_id = db.Column(db.Integer, primary_key = True)
   bio = db.Column(db.String)
   city = db.Column(db.String)

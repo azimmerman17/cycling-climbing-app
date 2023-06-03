@@ -1,3 +1,5 @@
+from sqlalchemy.orm import validates
+
 from app.extensions import db
 import datetime
 
@@ -21,8 +23,8 @@ class User(db.Model, JsonModel):
   nullable=False,
   default="N/A")
   # use the metric units
-  weight = db.Column(db.Float, min=5)
-  height = db.Column(db.Float min=50)
+  weight = db.Column(db.Float, db.CheckConstraint('wieght > 20 AND wieght < 225'))
+  height = db.Column(db.Float, db.CheckConstraint('height > 100 AND height < 225'))
   ftp = db.Column(db.Integer)
   # Hash value
   password_digest = db.Column(db.String)
@@ -51,4 +53,26 @@ class User(db.Model, JsonModel):
     self. prefer_units = prefer_units
     self.updated_at = updated_at
     self.created_at = created_at
+
+  # validation for user submited data
+  @validates('weight')
+  def validate_weight(self, key, value):
+    if not value > 20:
+      raise ValueError(f'Invalid weight: {value} is below the minimum value')
+    elif not value < 225:
+        raise ValueError(f'Invalid weight: {value} is above the maximum value')
+    return value
+
+  @validates('height')
+  def validate_weight(self, key, value):
+    if not value > 100:
+      raise ValueError(f'Invalid height: {value} is below the minimum value')
+    elif not value < 225:
+        raise ValueError(f'Invalid height: {value} is above the maximum value')
+    return value
+
+  @validates('email')
+  def validate_email(self, key, value):
+        assert '@' in value, f'{value} is not a valid email address'
+        return value
 
