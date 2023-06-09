@@ -24,6 +24,9 @@ def create_app(config_class=Config):
   from app.strava_auth import bp as strava_auth_bp
   app.register_blueprint(strava_auth_bp)
 
+  from app.segments import bp as segments_bp
+  app.register_blueprint(segments_bp)
+
   @app.route('/test')
   def test_page():
     return '<h1>Testing the Flask Application Factory Pattern</h1>'

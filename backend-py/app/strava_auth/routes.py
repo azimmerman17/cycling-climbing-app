@@ -32,10 +32,13 @@ def index(config_class=Config):
       'f': 'json'
     }
 
-
     # POST request to get your access token 
     res = requests.post(strava_auth_url, data=payload, verify=False)
     access_token = res.json()['access_token']
+    refresh_token = res.json()['refresh_token']
+
+    config_class.STRAVA_ACCESS_TOKEN = access_token
+    config_class.STRAVA_REFRESH_TOKEN = refresh_token
 
     # Using fetched access token use to get user profile and activities
     header = {'Authorization': 'Bearer ' + access_token}
@@ -44,15 +47,15 @@ def index(config_class=Config):
       'per_page': 10,
       'page': 1
     }
-    my_activities = requests.get(activities_url, headers=header, params=param).json()
+    #my_activities = requests.get(activities_url, headers=header, params=param).json()
 
-    my_profile = requests.get(profile_url, headers=header).json()
+    #my_profile = requests.get(profile_url, headers=header).json()
 
     return {
-      'profile': my_profile,
+      # 'profile': my_profile,
       # 'activities': my_activities,
-      'aa_access_token': access_token,
-      'aa_refresh_token': config_class.STRAVA_REFRESH_TOKEN
+      '_access_token': access_token,
+      '_refresh_token': config_class.STRAVA_REFRESH_TOKEN
     }
 
   except:
@@ -83,7 +86,13 @@ def strava_return(config_class=Config):
 
 
   # First return is for fuctional response
-  #return redirect(url_for('strava_auth.index', param=response['refresh_token']))
+  return redirect(url_for('strava_auth.index', param=response['refresh_token']))
   
   # Second return is for displaying returned strava data
-  return response
+  # return response
+
+  @bp.route('/clear')
+  def strava_return(config_class=Config):
+    config_class.STRAVA_ACCESS_TOKEN = null
+    config_class.STRAVA_REFRESH_TOKEN = null
+    return 'strava tokens cleared'
