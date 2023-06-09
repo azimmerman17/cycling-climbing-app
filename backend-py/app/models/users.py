@@ -1,12 +1,12 @@
 from sqlalchemy.orm import validates
 
-from app.extensions import db
+from app.extensions import db, JsonModel
 import datetime
 
 #creates serialization for JSON
-class JsonModel(object):
-  def as_dict(self):
-    return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+# class JsonModel(object):
+#   def as_dict(self):
+#     return {c.name: getattr(self, c.name) for c in self.__table__.columns}
 
 class User(db.Model, JsonModel):
   user_id = db.Column(db.Integer, primary_key = True)
