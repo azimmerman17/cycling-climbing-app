@@ -2,7 +2,6 @@ import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import ToggleButton from 'react-bootstrap/ToggleButton';
 
 const RadioButtons = ({ radioNme, setRadioNme, radios }) => {
-  console.log(radios)
   return (
     <ButtonGroup className='bg-white'>
       {

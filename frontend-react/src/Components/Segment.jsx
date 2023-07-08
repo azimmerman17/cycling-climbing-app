@@ -1,9 +1,11 @@
 import { useState } from "react"
 import { useParams } from "react-router-dom"
+import Container from "react-bootstrap/Container"
 
 import StravaSample from '../flowingSprings'
-import Segment_Title from "./Segment_TItle"
+import SegmentTitle from "./SegmentTitle"
 import RadioButtons from "./RadioButtons"
+import SegmentDetailView from "./SegmentDetailView"
 
 const Segments = () => {
   let { segmentId } = useParams()
@@ -13,17 +15,38 @@ const Segments = () => {
   let segmentRadios = [
     'Details',
     'Training',
-    'Plan'
+    'Plan',
+    'Leaderboard'
   ]
-  console.log(StravaSample)
-  console.log(radioNme)
+
+  const view = (radioNme) => {
+    switch (radioNme) {
+      case 'Details':
+        return <SegmentDetailView data={StravaSample} unit={unit} />
+      case 'Training':
+        return <div>Training</div>
+      case 'Plan':
+        return <div>Plan</div>
+      case 'Leaderboard':
+        return <div> Strava Leaderboard</div>
+      default:
+        return <div>Error View</div>
+    }
+
+  }
+
+  // console.log(StravaSample)
+ // console.log(radioNme)
 
   return (
     <div>
-      <Segment_Title data={StravaSample} unit={unit} setUnit={setUnit}/>
+      <SegmentTitle data={StravaSample} unit={unit} setUnit={setUnit}/>
       {/* segment map and profile */}
-      <RadioButtons radioNme={radioNme} setRadioNme={setRadioNme} radios={segmentRadios} />
+      <Container className='my-2 p-2' fluid='md'>
+        <RadioButtons radioNme={radioNme} setRadioNme={setRadioNme} radios={segmentRadios} />
+      </Container>
       {/* Use Radios to change the view */}
+      {view(radioNme)}
     </div>
 
   )

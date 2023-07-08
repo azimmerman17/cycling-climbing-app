@@ -9,8 +9,7 @@ const App = () => {
   return (
     <div className="App">
       <Router>
-        <NavBar></NavBar>
-        Cycling Climbs
+        <NavBar />
         <Routes>
           {/* <Route exact path='/' element={<Home />} />  */}
           {/* <Route path='/segment' element={<Segments />} /> */}
