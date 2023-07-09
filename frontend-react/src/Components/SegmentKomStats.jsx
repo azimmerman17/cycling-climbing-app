@@ -10,8 +10,6 @@ const SegmentKomStats = ({ data }) => {
   const { overall, kom, qom } = xoms
   const { effort_description } = local_legend
 
-  console.log(data)
-
   return (
     <Container className='tile' fluid='md'>
       <h4 className='text-center m-2'>Course Records</h4>

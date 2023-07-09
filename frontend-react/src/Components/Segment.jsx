@@ -6,11 +6,14 @@ import StravaSample from '../flowingSprings'
 import SegmentTitle from "./SegmentTitle"
 import RadioButtons from "./RadioButtons"
 import SegmentDetailView from "./SegmentDetailView"
+import SegmentMap from "./SegementMap"
 
 const Segments = () => {
   let { segmentId } = useParams()
   let [ radioNme, setRadioNme ] = useState('Details')
   let [ unit, setUnit ] = useState('Imperial')
+
+  const { end_latlng, start_latlng, map } = StravaSample
 
   let segmentRadios = [
     'Details',
@@ -41,6 +44,7 @@ const Segments = () => {
   return (
     <div>
       <SegmentTitle data={StravaSample} unit={unit} setUnit={setUnit}/>
+      <SegmentMap start={start_latlng} end={end_latlng} map={map} />
       {/* segment map and profile */}
       <Container className='my-2 p-2' fluid='md'>
         <RadioButtons radioNme={radioNme} setRadioNme={setRadioNme} radios={segmentRadios} />

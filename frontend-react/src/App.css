@@ -36,9 +36,8 @@
     transform: rotate(360deg);
   }
 }
-
-
 /* All above is react default */
+
 .climb-logo {
   rotate: -60deg;
 }
@@ -84,3 +83,6 @@
   text-decoration: underline;
 }
 
+#map {
+  height: 300px;
+}
