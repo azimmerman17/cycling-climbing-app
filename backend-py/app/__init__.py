@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from flask_cors import CORS
 import json
 
 from config import Config
@@ -10,10 +11,12 @@ from app.models import users, strava_users
 
 def create_app(config_class=Config):
   app = Flask(__name__)
+
   app.config.from_object(config_class)
 
   # Initialize Flask extensions here
   db.init_app(app)
+  CORS(app, resources=r'/*')
 
   # migrate models
   from app.models import users, strava_users

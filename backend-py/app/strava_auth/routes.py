@@ -7,12 +7,12 @@ from config import Config
 
 @bp.route('/')
 def index(config_class=Config):
-  args = request.args
+  # args = request.args
 
   # checks for query string for refresh token needed on the redirect back
-  if args:
-    config_class.STRAVA_REFRESH_TOKEN = args['param']
-    print(config_class.STRAVA_REFRESH_TOKEN)
+  # if args:
+  #   config_class.STRAVA_REFRESH_TOKEN = args['param']
+  #   print(config_class.STRAVA_REFRESH_TOKEN)
   
   urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -43,23 +43,14 @@ def index(config_class=Config):
     # Using fetched access token use to get user profile and activities
     header = {'Authorization': 'Bearer ' + access_token}
     # see Strava documentation on param usage
-    param = {
-      'per_page': 10,
-      'page': 1
-    }
-    #my_activities = requests.get(activities_url, headers=header, params=param).json()
 
-    #my_profile = requests.get(profile_url, headers=header).json()
+    print(config_class.returnData)
 
-    return {
-      # 'profile': my_profile,
-      # 'activities': my_activities,
-      '_access_token': access_token,
-      '_refresh_token': config_class.STRAVA_REFRESH_TOKEN
-    }
+    return redirect(f'http://localhost:8080/{config_class.returnData.route}/{config_class.returnData.id}')
 
   except:
     # for new users or users that do not have a refresh token
+    print('Invalid or no refresh token')
     strava_authorize_url = 'https://www.strava.com/oauth/authorize'
     client_id = config_class.STRAVA_CLIENT_ID
     redirect_uri = 'http://localhost:8080/auth/strava/return'
@@ -84,15 +75,15 @@ def strava_return(config_class=Config):
 
   response = requests.request("POST", url).json()
 
-
+  config_class.STRAVA_REFRESH_TOKEN = response['refresh_token']
   # First return is for fuctional response
-  return redirect(url_for('strava_auth.index', param=response['refresh_token']))
+  return redirect(url_for('strava_auth.index'))
   
   # Second return is for displaying returned strava data
   # return response
 
   @bp.route('/clear')
   def strava_return(config_class=Config):
-    config_class.STRAVA_ACCESS_TOKEN = null
-    config_class.STRAVA_REFRESH_TOKEN = null
+    config_class.STRAVA_ACCESS_TOKEN = None
+    config_class.STRAVA_REFRESH_TOKEN = None
     return 'strava tokens cleared'
