@@ -7,12 +7,15 @@ import SegmentTitle from "./SegmentTitle"
 import RadioButtons from "./RadioButtons"
 import SegmentDetailView from "./SegmentDetailView"
 import SegmentMap from "./SegementMap"
+import SegmentPlan from "./SegmentPlan"
+import SegmentUserWeight from "./SegementUserWeight"
 // import SegmentProfile from "./SegmentProfile"  // Later Build
 
 const Segments = () => {
   let { segmentId } = useParams()
   let [ radioNme, setRadioNme ] = useState('Details')
   let [ unit, setUnit ] = useState('Imperial')
+  let [ weight, setWeight] = useState(0)
   let [ segmentData, SetSegmentData ] = useState(null)
 
   useEffect (() => {
@@ -43,9 +46,17 @@ const Segments = () => {
       case 'Details':
         return <SegmentDetailView data={segmentData} unit={unit} />
       case 'Training':
-        return <div>Training</div>
+        return (
+          <SegmentUserWeight weight={weight} setWeight={setWeight} />  
+        )
+
       case 'Plan':
-        return <div>Plan</div>
+        return (
+          <div>
+            <SegmentUserWeight weight={weight} setWeight={setWeight} />  
+            <SegmentPlan data={segmentData} />
+          </div>
+        )
       case 'Leaderboard':
         return <div> Strava Leaderboard</div>
       default:
