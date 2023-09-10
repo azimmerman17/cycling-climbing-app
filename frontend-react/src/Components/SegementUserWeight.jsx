@@ -22,7 +22,7 @@ const SegmentUserWeight = ({ weight, setWeight, unit }) => {
         />
         <InputGroup.Text id="rider-weight-unit">{localUnit}</InputGroup.Text>
       </InputGroup>
-    <p className="disclaimer">20lbs (9.05kg) has been automatically to account for the bike and gear weight.  If know your equipment will be a different weight please add/subtract it from your weight.</p>
+      <p className="disclaimer">20lbs (9.05kg) has been automatically to account for the bike and gear weight.  If know your equipment will be a different weight please add/subtract it from your weight.</p>
     </Container> 
   )
 }
