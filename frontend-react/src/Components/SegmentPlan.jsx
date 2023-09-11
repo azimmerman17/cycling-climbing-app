@@ -32,6 +32,11 @@ const SegmentPlan = ({ data, weight, goalTime, goalPower, goalSpeed, goalBenchma
     else if (goalBenchmark === 'CR') setBenchmarkTime(stringTimeToSeconds(overall))
   }, [goalBenchmark])
 
+  let timeCalc
+  let weightMetric
+  if (unit === 'Metric') weightMetric = weight
+  else weightMetric = weight * 0.453592 
+
   const returnData = (goalUnit) => {
     switch (goalUnit) {
       case 'Time':
@@ -39,30 +44,31 @@ const SegmentPlan = ({ data, weight, goalTime, goalPower, goalSpeed, goalBenchma
           <div>
             <p>Power: {goalTime > 0 && weight > 0 ? <strong>{CalcPower(unit, weight, goalTime, total_elevation_gain)} W</strong> : `N/A`}</p>
             <p>Speed: {goalTime > 0 ? <strong>{CalcSpeed(unit, goalTime, distance)} {unit === 'Metric'? 'kph' : 'mph'}</strong>: `N/A`}</p>
-            <p>Engery: { goalTime > 0 && weight > 0 ? <strong>{Math.floor(CalcPower(unit, weight, goalTime, total_elevation_gain) * goalTime / 1000)} KJ</strong> : `N/A`}</p>
+            <p>W/Kg: {goalTime > 0 && weight > 0 ? <strong>{(CalcPower(unit, weight, goalTime, total_elevation_gain) / weightMetric).toFixed(2)} W/kg</strong> : `N/A`}</p>
+            <p>Engery: { goalTime > 0 && weight > 0 ? <strong>{Math.floor(CalcPower(unit, weight, goalTime, total_elevation_gain) * 1.1 * goalTime / 1000)} KJ</strong> : `N/A`}</p>
           </div>
         )
       case 'Power':
-        let timePower = CalcTime(unit, weight, goalPower, total_elevation_gain)
+        timeCalc = CalcTime(unit, weight, goalPower / 1.1, total_elevation_gain)
         return (
           <div>
-            <p>Time: {goalPower > 0 && weight > 0 ? <strong>{TimeConvSec(timePower)}</strong> : 'N/A'}</p>
-            <p>Speed: {goalPower > 0 && weight > 0 ? <strong>{CalcSpeed(unit, timePower, distance)} {unit === 'Metric'? 'kph' : 'mph'}</strong>: `N/A`}</p>
-            <p>Engery: { goalPower > 0 && weight > 0 ? <strong>{Math.floor(goalPower * timePower / 1000)} KJ</strong> : `N/A`}</p>
+            <p>Time: {goalPower > 0 && weight > 0 ? <strong>{TimeConvSec(timeCalc)}</strong> : 'N/A'}</p>
+            <p>Speed: {goalPower > 0 && weight > 0 ? <strong>{CalcSpeed(unit, timeCalc, distance)} {unit === 'Metric'? 'kph' : 'mph'}</strong>: `N/A`}</p>
+            <p>W/Kg: {goalPower > 0 && weight > 0 ? <strong>{(goalPower / weightMetric).toFixed(2)} W/kg</strong> : `N/A`}</p>
+            <p>Engery: { goalPower > 0 && weight > 0 ? <strong>{Math.floor(goalPower * timeCalc / 1000)} KJ</strong> : `N/A`}</p>
 
           </div>
         )
       case 'Speed':
         // convert speed to m/s
-        let timeSpeed
-        if (unit !== 'metric') timeSpeed = distance / (goalSpeed * 0.44704)
-        else timePower = distance / (goalSpeed * 0.277778)
-
+        if (unit !== 'metric') timeCalc = distance / (goalSpeed * 0.44704)
+        else timeCalc = distance / (goalSpeed * 0.277778)
         return (
           <div>
-            <p>Power: {goalSpeed > 0 && weight > 0 ? <strong>{CalcPower(unit, weight, timeSpeed, total_elevation_gain)} W</strong> : `N/A`}</p>
-            <p>Time: {goalSpeed > 0 ? <strong>{TimeConvSec(timeSpeed)}</strong> : 'N/A'}</p>
-            <p>Engery: { goalSpeed > 0 && weight > 0 ? <strong>{Math.floor(CalcPower(unit, weight, timeSpeed, total_elevation_gain) * timeSpeed / 1000)} KJ</strong> : `N/A`}</p>
+            <p>Power: {goalSpeed > 0 && weight > 0 ? <strong>{CalcPower(unit, weight, timeCalc, total_elevation_gain)} W</strong> : `N/A`}</p>
+            <p>Time: {goalSpeed > 0 ? <strong>{TimeConvSec(timeCalc)}</strong> : 'N/A'}</p>
+            <p>W/Kg: {goalSpeed > 0 && weight > 0 ? <strong>{(CalcPower(unit, weight, timeCalc, total_elevation_gain) / weightMetric).toFixed(2)} W/kg</strong> : `N/A`}</p>
+            <p>Engery: { goalSpeed > 0 && weight > 0 ? <strong>{Math.floor(CalcPower(unit, weight, timeCalc, total_elevation_gain) * 1.1 * timeSpeed / 1000)} KJ</strong> : `N/A`}</p>
 
           </div>
         )
@@ -72,6 +78,7 @@ const SegmentPlan = ({ data, weight, goalTime, goalPower, goalSpeed, goalBenchma
             <p>Time: {benchmarkTime > 0 ? <strong>{TimeConvSec(benchmarkTime)}</strong> : 'N/A'}</p>
             <p>Power: {benchmarkTime > 0 && weight > 0 ? <strong>{CalcPower(unit, weight, benchmarkTime, total_elevation_gain)} W</strong> : `N/A`}</p>
             <p>Speed: {benchmarkTime > 0 ? <strong>{CalcSpeed(unit, benchmarkTime, distance)} {unit === 'Metric'? 'kph' : 'mph'}</strong>: `N/A`}</p>
+            <p>W/Kg: {benchmarkTime > 0 && weight > 0 ? <strong>{(CalcPower(unit, weight, benchmarkTime, total_elevation_gain) / weightMetric).toFixed(2)} W/kg</strong> : `N/A`}</p>
             <p>Engery: { benchmarkTime > 0 && weight > 0 ? <strong>{Math.floor(CalcPower(unit, weight, benchmarkTime, total_elevation_gain) * benchmarkTime / 1000)} KJ</strong> : `N/A`}</p>
 
           </div>
@@ -84,6 +91,8 @@ const SegmentPlan = ({ data, weight, goalTime, goalPower, goalSpeed, goalBenchma
     <Container className='tile' fluid='md'>
       <h6 className="fw-bold text-center mb-3">Estimates</h6>
       {returnData(goalUnit)}
+      <p className="disclaimer">Power and Energy Calculations are for optimial conditions, do not take into account factors such as air resistance, weather, varying gradient, tire choice, etc. Actual output may vary</p>
+      <p className="disclaimer">Estimates are more accurate with steeper uphill gradients, please be safe, ride within your limits, and don't do anything stupid.</p>
     </Container>
   )
 }
