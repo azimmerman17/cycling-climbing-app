@@ -24,7 +24,7 @@ const Segments = () => {
   let [ goalTime, setGoalTime ] = useState(0)
   let [ goalPower, setGoalPower ] = useState(0)
   let [ goalSpeed, setGoalSpeed ] = useState(0)
-  let [ goalBenchmark, setgoalBenchmark ] = useState('PR')
+  let [ goalBenchmark, setGoalBenchmark ] = useState('PR')
   let [ goalUnit, setGoalUnit ] = useState('Time')
   console.log(goalPower)
 
@@ -75,7 +75,7 @@ const Segments = () => {
                 <SegmentUserWeight weight={weight} setWeight={setWeight} />  
               </Col>
               <Col xs={12} md={6}>
-                <SegmentPlanGoal goalTime={goalTime} setGoalTime={setGoalTime} goalPower={goalPower} setGoalPower={setGoalPower}  goalSpeed={goalSpeed} setGoalSpeed={setGoalSpeed} goalBenchmark={goalBenchmark} setgoalBenchmark={setgoalBenchmark} goalUnit={goalUnit} setGoalUnit={setGoalUnit} unit={unit} />
+                <SegmentPlanGoal goalTime={goalTime} setGoalTime={setGoalTime} goalPower={goalPower} setGoalPower={setGoalPower}  goalSpeed={goalSpeed} setGoalSpeed={setGoalSpeed} goalBenchmark={goalBenchmark} setGoalBenchmark={setGoalBenchmark} goalUnit={goalUnit} setGoalUnit={setGoalUnit} unit={unit} />
               </Col>
             </Row>
             <SegmentPlan data={segmentData} weight={weight} goalTime={goalTime} goalPower={goalPower} goalSpeed={goalSpeed} goalBenchmark={goalBenchmark} goalUnit={goalUnit} unit={unit} />

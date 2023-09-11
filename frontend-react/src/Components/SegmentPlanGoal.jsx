@@ -4,8 +4,9 @@ import Dropdown from 'react-bootstrap/Dropdown';
 import SegmentGoalTime from "./SegmentGoalTime";
 import SegmentGoalPower from "./SegmentGoalPower";
 import SegmentGoalSpeed from "./SegmentGoalSpeed";
+import SegmentGoalBenchmark from "./SegmentGoalBenchmark";
 
-const SegmentPlanGoal = ({ goalTime, setGoalTime, goalPower, setGoalPower,  goalSpeed, setGoalSpeed, goalBenchmark, setgoalBenchmark, goalUnit, setGoalUnit, unit }) => {
+const SegmentPlanGoal = ({ goalTime, setGoalTime, goalPower, setGoalPower,  goalSpeed, setGoalSpeed, goalBenchmark, setGoalBenchmark, goalUnit, setGoalUnit, unit }) => {
   const goalInput = (goalUnit) => {
     switch (goalUnit) {
       case 'Time':
@@ -15,7 +16,7 @@ const SegmentPlanGoal = ({ goalTime, setGoalTime, goalPower, setGoalPower,  goal
       case 'Speed':
         return <SegmentGoalSpeed goalSpeed={goalSpeed} setGoalSpeed={setGoalSpeed} unit={unit} />
       case 'Benchmark':
-        break
+        return <SegmentGoalBenchmark goalBenchmark={goalBenchmark} setGoalBenchmark={setGoalBenchmark} />
       default:
         console.log('Error: Goal Unit is not supported')
     }
@@ -24,7 +25,7 @@ const SegmentPlanGoal = ({ goalTime, setGoalTime, goalPower, setGoalPower,  goal
     <Container className='tile' fluid='md'>
       <h6 htmlFor="rider-goal-unit" className="form-label fw-bold text-center mb-3">Rider Goal</h6>
       <Dropdown className='mb-3'>
-        <Dropdown.Toggle variant="secondary" id="dropdown-basic">
+        <Dropdown.Toggle variant="primary" id="dropdown-basic">
           {goalUnit}
         </Dropdown.Toggle>
         <Dropdown.Menu>
