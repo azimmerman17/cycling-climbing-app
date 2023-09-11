@@ -36,6 +36,7 @@ const SegmentGoalTime = ({ goalTime, setGoalTime }) => {
             aria-label="goal-hour"
             aria-describedby="goal-hour"
             type="number"
+            min={0}
             onChange={e => setTime('hour', e.target.value, minute, second)}
           />
           <InputGroup.Text className='mx-0' id="goal-minute">h</InputGroup.Text>
@@ -48,6 +49,7 @@ const SegmentGoalTime = ({ goalTime, setGoalTime }) => {
             aria-label="goal-minute"
             aria-describedby="goal-minute"
             type="number"
+            min={0}
             onChange={e => setTime('minute', hour, e.target.value, second)}
           />
           <InputGroup.Text id="goal-second">m</InputGroup.Text>
@@ -60,7 +62,7 @@ const SegmentGoalTime = ({ goalTime, setGoalTime }) => {
             aria-label="goal-second"
             aria-describedby="goal-second"
             type="number"
-            style={{'display':'inline'}}
+            min={0}
             onChange={e => setTime('minute', hour, minute, e.target.value)}
           />
           <InputGroup.Text id="goal-hour">s</InputGroup.Text>

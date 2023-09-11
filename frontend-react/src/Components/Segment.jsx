@@ -26,8 +26,6 @@ const Segments = () => {
   let [ goalSpeed, setGoalSpeed ] = useState(0)
   let [ goalBenchmark, setGoalBenchmark ] = useState('PR')
   let [ goalUnit, setGoalUnit ] = useState('Time')
-  console.log(goalPower)
-
 
   useEffect (() => {
     const fetchSegment = async (id) => {

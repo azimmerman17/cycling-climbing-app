@@ -39,6 +39,7 @@ const SegmentPlan = ({ data, weight, goalTime, goalPower, goalSpeed, goalBenchma
           <div>
             <p>Power: {goalTime > 0 && weight > 0 ? <strong>{CalcPower(unit, weight, goalTime, total_elevation_gain)} W</strong> : `N/A`}</p>
             <p>Speed: {goalTime > 0 ? <strong>{CalcSpeed(unit, goalTime, distance)} {unit === 'Metric'? 'kph' : 'mph'}</strong>: `N/A`}</p>
+            <p>Engery: { goalTime > 0 && weight > 0 ? <strong>{Math.floor(CalcPower(unit, weight, goalTime, total_elevation_gain) * goalTime / 1000)} KJ</strong> : `N/A`}</p>
           </div>
         )
       case 'Power':
@@ -47,6 +48,8 @@ const SegmentPlan = ({ data, weight, goalTime, goalPower, goalSpeed, goalBenchma
           <div>
             <p>Time: {goalPower > 0 && weight > 0 ? <strong>{TimeConvSec(timePower)}</strong> : 'N/A'}</p>
             <p>Speed: {goalPower > 0 && weight > 0 ? <strong>{CalcSpeed(unit, timePower, distance)} {unit === 'Metric'? 'kph' : 'mph'}</strong>: `N/A`}</p>
+            <p>Engery: { goalPower > 0 && weight > 0 ? <strong>{Math.floor(goalPower * timePower / 1000)} KJ</strong> : `N/A`}</p>
+
           </div>
         )
       case 'Speed':
@@ -59,6 +62,8 @@ const SegmentPlan = ({ data, weight, goalTime, goalPower, goalSpeed, goalBenchma
           <div>
             <p>Power: {goalSpeed > 0 && weight > 0 ? <strong>{CalcPower(unit, weight, timeSpeed, total_elevation_gain)} W</strong> : `N/A`}</p>
             <p>Time: {goalSpeed > 0 ? <strong>{TimeConvSec(timeSpeed)}</strong> : 'N/A'}</p>
+            <p>Engery: { goalSpeed > 0 && weight > 0 ? <strong>{Math.floor(CalcPower(unit, weight, timeSpeed, total_elevation_gain) * timeSpeed / 1000)} KJ</strong> : `N/A`}</p>
+
           </div>
         )
       case 'Benchmark':
@@ -67,6 +72,7 @@ const SegmentPlan = ({ data, weight, goalTime, goalPower, goalSpeed, goalBenchma
             <p>Time: {benchmarkTime > 0 ? <strong>{TimeConvSec(benchmarkTime)}</strong> : 'N/A'}</p>
             <p>Power: {benchmarkTime > 0 && weight > 0 ? <strong>{CalcPower(unit, weight, benchmarkTime, total_elevation_gain)} W</strong> : `N/A`}</p>
             <p>Speed: {benchmarkTime > 0 ? <strong>{CalcSpeed(unit, benchmarkTime, distance)} {unit === 'Metric'? 'kph' : 'mph'}</strong>: `N/A`}</p>
+            <p>Engery: { benchmarkTime > 0 && weight > 0 ? <strong>{Math.floor(CalcPower(unit, weight, benchmarkTime, total_elevation_gain) * benchmarkTime / 1000)} KJ</strong> : `N/A`}</p>
 
           </div>
 

@@ -11,6 +11,7 @@ const SegmentGoalSpeed = ({ goalSpeed, setGoalSpeed, unit }) => {
           aria-label="rider-goal-power"
           aria-describedby="rider-goal-power"
           type="number"
+          min={0}
           onChange={e => setGoalSpeed(e.target.value * 1) }
         />
         <InputGroup.Text id="rider-power-unit">{unit === 'Metric'? 'kph' : 'mph'}</InputGroup.Text>
