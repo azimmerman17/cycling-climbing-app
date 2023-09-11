@@ -3,16 +3,17 @@ import Dropdown from 'react-bootstrap/Dropdown';
 
 import SegmentGoalTime from "./SegmentGoalTime";
 import SegmentGoalPower from "./SegmentGoalPower";
+import SegmentGoalSpeed from "./SegmentGoalSpeed";
 
-const SegmentPlanGoal = ({ goalTime, setGoalTime, goalPower, setGoalPower,  goalSpeed, setGoalSpeed, goalBenchmark, setgoalBenchmark, goalUnit, setGoalUnit }) => {
-  const goalInput = (unit) => {
-    switch (unit) {
+const SegmentPlanGoal = ({ goalTime, setGoalTime, goalPower, setGoalPower,  goalSpeed, setGoalSpeed, goalBenchmark, setgoalBenchmark, goalUnit, setGoalUnit, unit }) => {
+  const goalInput = (goalUnit) => {
+    switch (goalUnit) {
       case 'Time':
         return <SegmentGoalTime goalTime={goalTime} setGoalTime={setGoalTime} />
       case 'Power':
         return <SegmentGoalPower goalPower={goalPower} setGoalPower={setGoalPower} />
       case 'Speed':
-        break
+        return <SegmentGoalSpeed goalSpeed={goalSpeed} setGoalSpeed={setGoalSpeed} unit={unit} />
       case 'Benchmark':
         break
       default:

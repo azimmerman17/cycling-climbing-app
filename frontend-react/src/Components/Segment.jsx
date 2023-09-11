@@ -75,7 +75,7 @@ const Segments = () => {
                 <SegmentUserWeight weight={weight} setWeight={setWeight} />  
               </Col>
               <Col xs={12} md={6}>
-                <SegmentPlanGoal goalTime={goalTime} setGoalTime={setGoalTime} goalPower={goalPower} setGoalPower={setGoalPower}  goalSpeed={goalSpeed} setGoalSpeed={setGoalSpeed} goalBenchmark={goalBenchmark} setgoalBenchmark={setgoalBenchmark} goalUnit={goalUnit} setGoalUnit={setGoalUnit} />
+                <SegmentPlanGoal goalTime={goalTime} setGoalTime={setGoalTime} goalPower={goalPower} setGoalPower={setGoalPower}  goalSpeed={goalSpeed} setGoalSpeed={setGoalSpeed} goalBenchmark={goalBenchmark} setgoalBenchmark={setgoalBenchmark} goalUnit={goalUnit} setGoalUnit={setGoalUnit} unit={unit} />
               </Col>
             </Row>
             <SegmentPlan data={segmentData} weight={weight} goalTime={goalTime} goalPower={goalPower} goalSpeed={goalSpeed} goalBenchmark={goalBenchmark} goalUnit={goalUnit} unit={unit} />
