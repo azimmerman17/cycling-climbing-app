@@ -3,7 +3,6 @@ import { useParams } from "react-router-dom"
 import Container from "react-bootstrap/Container"
 import Row from "react-bootstrap/Row"
 
-import StravaSample from '../flowingSprings'
 import SegmentTitle from "./SegmentTitle"
 import RadioButtons from "./RadioButtons"
 import SegmentDetailView from "./SegmentDetailView"
@@ -20,12 +19,15 @@ const Segments = () => {
   let [ radioNme, setRadioNme ] = useState('Details')
   let [ unit, setUnit ] = useState('Imperial')
   let [ weight, setWeight] = useState(0)
+
   // For Plan Tab
   let [ goalTime, setGoalTime ] = useState(0)
   let [ goalPower, setGoalPower ] = useState(0)
   let [ goalSpeed, setGoalSpeed ] = useState(0)
   let [ goalBenchmark, setgoalBenchmark ] = useState('PR')
   let [ goalUnit, setGoalUnit ] = useState('Time')
+  console.log(goalPower)
+
 
   useEffect (() => {
     const fetchSegment = async (id) => {
@@ -47,7 +49,7 @@ const Segments = () => {
     'Details',
     'Training',
     'Plan',
-   // 'Leaderboard',  // possibly later, need to think about due to 
+   // 'Leaderboard',  // possibly later, need to think about it
   ]
 
   const view = (radioNme) => {
@@ -73,7 +75,7 @@ const Segments = () => {
                 <SegmentUserWeight weight={weight} setWeight={setWeight} />  
               </Col>
               <Col xs={12} md={6}>
-                <SegmentPlanGoal goalTime={goalTime} setGoalTime={setGoalTime} goalPower={goalPower} setgoalPower={setGoalPower}  goalSpeed={goalSpeed} setGoalSpeed={setGoalSpeed} goalBenchmark={goalBenchmark} setgoalBenchmark={setgoalBenchmark} goalUnit={goalUnit} setGoalUnit={setGoalUnit} />
+                <SegmentPlanGoal goalTime={goalTime} setGoalTime={setGoalTime} goalPower={goalPower} setGoalPower={setGoalPower}  goalSpeed={goalSpeed} setGoalSpeed={setGoalSpeed} goalBenchmark={goalBenchmark} setgoalBenchmark={setgoalBenchmark} goalUnit={goalUnit} setGoalUnit={setGoalUnit} />
               </Col>
             </Row>
             <SegmentPlan data={segmentData} weight={weight} goalTime={goalTime} goalPower={goalPower} goalSpeed={goalSpeed} goalBenchmark={goalBenchmark} goalUnit={goalUnit} unit={unit} />
@@ -87,8 +89,6 @@ const Segments = () => {
 
   }
 
-  // console.log(StravaSample)
- // console.log(radioNme)
   if (segmentData) {
     console.log(segmentData)
     const { end_latlng, start_latlng, map } = segmentData

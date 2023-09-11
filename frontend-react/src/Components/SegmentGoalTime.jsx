@@ -20,7 +20,6 @@ const SegmentGoalTime = ({ goalTime, setGoalTime }) => {
         setMinute(m)
         break
       default:
-        console.log(typeof(s))
         setSecond(s)
         break
     }

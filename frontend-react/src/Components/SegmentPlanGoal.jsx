@@ -2,18 +2,15 @@ import Container from "react-bootstrap/Container"
 import Dropdown from 'react-bootstrap/Dropdown';
 
 import SegmentGoalTime from "./SegmentGoalTime";
+import SegmentGoalPower from "./SegmentGoalPower";
 
-const SegmentPlanGoal = ({ goalTime, setGoalTime, goalPower, setgoalPower,  goalSpeed, setGoalSpeed, goalBenchmark, setgoalBenchmark, goalUnit, setGoalUnit }) => {
-
+const SegmentPlanGoal = ({ goalTime, setGoalTime, goalPower, setGoalPower,  goalSpeed, setGoalSpeed, goalBenchmark, setgoalBenchmark, goalUnit, setGoalUnit }) => {
   const goalInput = (unit) => {
     switch (unit) {
       case 'Time':
-        return(
-          <SegmentGoalTime goalTime={goalTime} setGoalTime={setGoalTime} />
-        )
-        break
+        return <SegmentGoalTime goalTime={goalTime} setGoalTime={setGoalTime} />
       case 'Power':
-        break
+        return <SegmentGoalPower goalPower={goalPower} setGoalPower={setGoalPower} />
       case 'Speed':
         break
       case 'Benchmark':
@@ -26,7 +23,7 @@ const SegmentPlanGoal = ({ goalTime, setGoalTime, goalPower, setgoalPower,  goal
     <Container className='tile' fluid='md'>
       <h6 htmlFor="rider-goal-unit" className="form-label fw-bold text-center mb-3">Rider Goal</h6>
       <Dropdown className='mb-3'>
-        <Dropdown.Toggle variant="success" id="dropdown-basic">
+        <Dropdown.Toggle variant="secondary" id="dropdown-basic">
           {goalUnit}
         </Dropdown.Toggle>
         <Dropdown.Menu>

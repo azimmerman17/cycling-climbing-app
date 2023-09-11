@@ -1,6 +1,4 @@
 import Container from "react-bootstrap/Container"
-import Row from "react-bootstrap/Row"
-import Col from "react-bootstrap/Col";
 import Form from 'react-bootstrap/Form';
 import InputGroup from 'react-bootstrap/InputGroup';
 
@@ -18,7 +16,7 @@ const SegmentUserWeight = ({ weight, setWeight, unit }) => {
           aria-label="rider-weight"
           aria-describedby="rider-weight"
           type="number"
-          onChange={e => setWeight(e.target.value) }
+          onChange={e => setWeight((e.target.value * 1)) }
         />
         <InputGroup.Text id="rider-weight-unit">{localUnit}</InputGroup.Text>
       </InputGroup>

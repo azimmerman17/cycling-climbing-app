@@ -1,11 +1,14 @@
 import Container from "react-bootstrap/Container"
 import CalcPower from "../Functions/CalcPower"
 import CalcSpeed from "../Functions/CalcSpeed"
+import CalcTime from "../Functions/CalcTime"
+import TimeConvSec from "../Functions/TimeConvSec"
 
 // Plan on a ride either power, speed, or time goal
 const SegmentPlan = ({ data, weight, goalTime, goalPower, goalSpeed, goalBenchmark, goalUnit, unit }) => {
   const { total_elevation_gain, distance } = data
-  console.log(total_elevation_gain, weight, goalTime)
+
+  console.log(goalPower)
 
   
   const returnData = (goalUnit) => {
@@ -14,12 +17,17 @@ const SegmentPlan = ({ data, weight, goalTime, goalPower, goalSpeed, goalBenchma
         return (
           <div>
             <p>Power: {goalTime > 0 && weight > 0 ? <strong>{CalcPower(unit, weight, goalTime, total_elevation_gain)} W</strong> : `N/A`}</p>
-            <p>Speed: {goalTime > 0 && weight > 0 ?  <strong>{CalcSpeed(unit, goalTime, distance)} {unit === 'Metric'? 'kph' : 'mph'}</strong>: `N/A`}</p>
-
+            <p>Speed: {goalTime > 0 && weight > 0 ? <strong>{CalcSpeed(unit, goalTime, distance)} {unit === 'Metric'? 'kph' : 'mph'}</strong>: `N/A`}</p>
           </div>
         )
       case 'Power':
-        return <p>Power</p>
+        let time = CalcTime(unit, weight, goalPower, total_elevation_gain)
+        return (
+          <div>
+            <p>Time: {goalPower > 0 && weight >0 ? <strong>{TimeConvSec(time)}</strong> : 'N/A'}</p>
+            <p>Speed: {goalPower > 0 && weight > 0 ? <strong>{CalcSpeed(unit, time, distance)} {unit === 'Metric'? 'kph' : 'mph'}</strong>: `N/A`}</p>
+          </div>
+        )
       case 'Speed':
         return <p>Speed</p>
       case 'Benchmark':
