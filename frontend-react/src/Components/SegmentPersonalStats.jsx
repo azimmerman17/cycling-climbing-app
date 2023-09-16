@@ -33,7 +33,7 @@ const SegmentPersonalStats = ({ data, starred }) => {
       </Row>
       <Row className='m-2'>
         <Col xs={3}>
-          <h6 className='fw-bold font-small mb-0'>Personal Record:</h6>
+          <h6 className='fw-bold font-small mb-0'>Record Date:</h6>
         </Col>
         <Col>
           <p className='font-small align-middle mb-0'>{DateConv(pr_date)}</p>

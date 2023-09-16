@@ -2,6 +2,7 @@ import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
 import Container from "react-bootstrap/Container"
 import Row from "react-bootstrap/Row"
+import Col from "react-bootstrap/esm/Col"
 
 import SegmentTitle from "./SegmentTitle"
 import RadioButtons from "./RadioButtons"
@@ -10,7 +11,11 @@ import SegmentMap from "./SegementMap"
 import SegmentPlan from "./SegmentPlan"
 import SegmentUserWeight from "./SegementUserWeight"
 import SegmentPlanGoal from "./SegmentPlanGoal"
-import Col from "react-bootstrap/esm/Col"
+import SegmentTrainingView from "./SegmentTrainingView"
+import SegmentUserFTP from "./SegmentUserFTP"
+import SegmentGoalTime from "./SegmentGoalTime"
+import SegmentTrainingInverval from "./SegmentTrainingInterval"
+import SegmentTrainingZones from "./SegmentTrainingZones"
 // import SegmentProfile from "./SegmentProfile"  // Later Build
 
 const Segments = () => {
@@ -19,6 +24,11 @@ const Segments = () => {
   let [ radioNme, setRadioNme ] = useState('Details')
   let [ unit, setUnit ] = useState('Imperial')
   let [ weight, setWeight] = useState(0)
+
+  // For Training Tab
+  let [ FTP, setFTP ] = useState(0)
+  let [ interval, setInterval ] = useState(0)
+  let [ trainingZone, setTrainingZone ] = useState(2)
 
   // For Plan Tab
   let [ goalTime, setGoalTime ] = useState(0)
@@ -58,9 +68,23 @@ const Segments = () => {
         return (
           <Container>
             <Row>
-              <SegmentUserWeight weight={weight} setWeight={setWeight} />  
-              {/* User FTP */}
-              {/* USer Training Zones */}
+              <Col xs={12} md={6}>
+                <SegmentUserWeight weight={weight} setWeight={setWeight} />  
+              </Col>
+              <Col xs={12} md={6}>
+                <SegmentTrainingZones trainingZone={trainingZone} setTrainingZone={setTrainingZone} FTP={FTP} />
+              </Col>
+            </Row>
+            <Row>
+              <Col xs={12} md={6}>
+                <SegmentTrainingInverval interval={interval} setInterval={setInterval} />
+              </Col>
+              <Col xs={12} md={6}>
+                <SegmentUserFTP FTP={FTP} setFTP={setFTP} /> 
+              </Col>
+            </Row>
+            <Row>
+              <SegmentTrainingView  FTP={FTP} interval={interval} trainingZone={trainingZone} />
             </Row>
           </Container>
         )

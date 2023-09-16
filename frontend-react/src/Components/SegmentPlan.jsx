@@ -68,7 +68,7 @@ const SegmentPlan = ({ data, weight, goalTime, goalPower, goalSpeed, goalBenchma
             <p>Power: {goalSpeed > 0 && weight > 0 ? <strong>{CalcPower(unit, weight, timeCalc, total_elevation_gain)} W</strong> : `N/A`}</p>
             <p>Time: {goalSpeed > 0 ? <strong>{TimeConvSec(timeCalc)}</strong> : 'N/A'}</p>
             <p>W/Kg: {goalSpeed > 0 && weight > 0 ? <strong>{(CalcPower(unit, weight, timeCalc, total_elevation_gain) / weightMetric).toFixed(2)} W/kg</strong> : `N/A`}</p>
-            <p>Engery: { goalSpeed > 0 && weight > 0 ? <strong>{Math.floor(CalcPower(unit, weight, timeCalc, total_elevation_gain) * 1.1 * timeSpeed / 1000)} KJ</strong> : `N/A`}</p>
+            <p>Engery: { goalSpeed > 0 && weight > 0 ? <strong>{Math.floor(CalcPower(unit, weight, timeCalc, total_elevation_gain) * 1.1 * timeCalc / 1000)} KJ</strong> : `N/A`}</p>
 
           </div>
         )
