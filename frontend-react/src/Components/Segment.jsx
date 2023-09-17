@@ -13,7 +13,6 @@ import SegmentUserWeight from "./SegementUserWeight"
 import SegmentPlanGoal from "./SegmentPlanGoal"
 import SegmentTrainingView from "./SegmentTrainingView"
 import SegmentUserFTP from "./SegmentUserFTP"
-import SegmentGoalTime from "./SegmentGoalTime"
 import SegmentTrainingInverval from "./SegmentTrainingInterval"
 import SegmentTrainingZones from "./SegmentTrainingZones"
 // import SegmentProfile from "./SegmentProfile"  // Later Build
@@ -93,14 +92,17 @@ const Segments = () => {
         return (
           <Container>
             <Row>
-              <Col xs={12} md={6}>
+              <Col xs={12} md={4}>
                 <SegmentUserWeight weight={weight} setWeight={setWeight} />  
               </Col>
-              <Col xs={12} md={6}>
+              <Col xs={12} md={4}>
+                <SegmentUserFTP FTP={FTP} setFTP={setFTP} /> 
+              </Col>
+              <Col xs={12} md={4}>
                 <SegmentPlanGoal goalTime={goalTime} setGoalTime={setGoalTime} goalPower={goalPower} setGoalPower={setGoalPower}  goalSpeed={goalSpeed} setGoalSpeed={setGoalSpeed} goalBenchmark={goalBenchmark} setGoalBenchmark={setGoalBenchmark} goalUnit={goalUnit} setGoalUnit={setGoalUnit} unit={unit} />
               </Col>
             </Row>
-            <SegmentPlan data={segmentData} weight={weight} goalTime={goalTime} goalPower={goalPower} goalSpeed={goalSpeed} goalBenchmark={goalBenchmark} goalUnit={goalUnit} unit={unit} />
+            <SegmentPlan data={segmentData} weight={weight} goalTime={goalTime} goalPower={goalPower} goalSpeed={goalSpeed} goalBenchmark={goalBenchmark} goalUnit={goalUnit} unit={unit} FTP={FTP} />
           </Container>
         )
       case 'Leaderboard':

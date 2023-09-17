@@ -5,9 +5,11 @@ import CalcPower from "../Functions/CalcPower"
 import CalcSpeed from "../Functions/CalcSpeed"
 import CalcTime from "../Functions/CalcTime"
 import TimeConvSec from "../Functions/TimeConvSec"
+import getTrainingZone from "../Functions/getTrainingZone";
+import CalcTSS from "../Functions/CalcTSS";
 
 // Plan on a ride either power, speed, or time goal
-const SegmentPlan = ({ data, weight, goalTime, goalPower, goalSpeed, goalBenchmark, goalUnit, unit }) => {
+const SegmentPlan = ({ data, weight, goalTime, goalPower, goalSpeed, goalBenchmark, goalUnit, unit, FTP }) => {
   const { total_elevation_gain, distance, athlete_segment_stats, xoms } = data
   const { pr_elapsed_time } = athlete_segment_stats
   const { kom, overall, qom } = xoms
@@ -37,6 +39,7 @@ const SegmentPlan = ({ data, weight, goalTime, goalPower, goalSpeed, goalBenchma
   if (unit === 'Metric') weightMetric = weight
   else weightMetric = weight * 0.453592 
 
+
   const returnData = (goalUnit) => {
     switch (goalUnit) {
       case 'Time':
@@ -46,6 +49,9 @@ const SegmentPlan = ({ data, weight, goalTime, goalPower, goalSpeed, goalBenchma
             <p>Speed: {goalTime > 0 ? <strong>{CalcSpeed(unit, goalTime, distance)} {unit === 'Metric'? 'kph' : 'mph'}</strong>: `N/A`}</p>
             <p>W/Kg: {goalTime > 0 && weight > 0 ? <strong>{(CalcPower(unit, weight, goalTime, total_elevation_gain) / weightMetric).toFixed(2)} W/kg</strong> : `N/A`}</p>
             <p>Engery: { goalTime > 0 && weight > 0 ? <strong>{Math.floor(CalcPower(unit, weight, goalTime, total_elevation_gain) * 1.1 * goalTime / 1000)} KJ</strong> : `N/A`}</p>
+            <p>Training Zone: {goalTime > 0 && weight > 0 && FTP > 0 ? <strong>{getTrainingZone(FTP, CalcPower(unit, weight, goalTime, total_elevation_gain))}</strong> : 'N/A'}</p>
+            <p>TSS: {goalTime > 0 && weight > 0 && FTP > 0 ? <strong>{CalcTSS(goalTime, CalcPower(unit, weight, goalTime, total_elevation_gain), FTP)}</strong> : 'N/A'}</p>
+            {/* ADD MESSAGE */}
           </div>
         )
       case 'Power':
@@ -56,7 +62,9 @@ const SegmentPlan = ({ data, weight, goalTime, goalPower, goalSpeed, goalBenchma
             <p>Speed: {goalPower > 0 && weight > 0 ? <strong>{CalcSpeed(unit, timeCalc, distance)} {unit === 'Metric'? 'kph' : 'mph'}</strong>: `N/A`}</p>
             <p>W/Kg: {goalPower > 0 && weight > 0 ? <strong>{(goalPower / weightMetric).toFixed(2)} W/kg</strong> : `N/A`}</p>
             <p>Engery: { goalPower > 0 && weight > 0 ? <strong>{Math.floor(goalPower * timeCalc / 1000)} KJ</strong> : `N/A`}</p>
-
+            <p>Training Zone: {goalPower > 0 && weight > 0 && FTP > 0 ? <strong>{getTrainingZone(FTP, goalPower)}</strong> : 'N/A'}</p>
+            <p>TSS: {goalPower > 0 && weight > 0 && FTP > 0 ? <strong>{CalcTSS(timeCalc, goalPower, FTP)}</strong> : 'N/A'}</p>
+            {/* ADD MESSAGE */}
           </div>
         )
       case 'Speed':
@@ -69,7 +77,9 @@ const SegmentPlan = ({ data, weight, goalTime, goalPower, goalSpeed, goalBenchma
             <p>Time: {goalSpeed > 0 ? <strong>{TimeConvSec(timeCalc)}</strong> : 'N/A'}</p>
             <p>W/Kg: {goalSpeed > 0 && weight > 0 ? <strong>{(CalcPower(unit, weight, timeCalc, total_elevation_gain) / weightMetric).toFixed(2)} W/kg</strong> : `N/A`}</p>
             <p>Engery: { goalSpeed > 0 && weight > 0 ? <strong>{Math.floor(CalcPower(unit, weight, timeCalc, total_elevation_gain) * 1.1 * timeCalc / 1000)} KJ</strong> : `N/A`}</p>
-
+            <p>Training Zone: {goalSpeed > 0 && weight > 0 && FTP > 0 ? <strong>{getTrainingZone(FTP, CalcPower(unit, weight, timeCalc, total_elevation_gain))}</strong> : 'N/A'}</p>
+            <p>TSS: {goalSpeed > 0 && weight > 0 && FTP > 0 ? <strong>{CalcTSS(timeCalc, CalcPower(unit, weight, timeCalc, total_elevation_gain), FTP)}</strong> : 'N/A'}</p>
+            {/* ADD MESSAGE */}
           </div>
         )
       case 'Benchmark':
@@ -80,9 +90,10 @@ const SegmentPlan = ({ data, weight, goalTime, goalPower, goalSpeed, goalBenchma
             <p>Speed: {benchmarkTime > 0 ? <strong>{CalcSpeed(unit, benchmarkTime, distance)} {unit === 'Metric'? 'kph' : 'mph'}</strong>: `N/A`}</p>
             <p>W/Kg: {benchmarkTime > 0 && weight > 0 ? <strong>{(CalcPower(unit, weight, benchmarkTime, total_elevation_gain) / weightMetric).toFixed(2)} W/kg</strong> : `N/A`}</p>
             <p>Engery: { benchmarkTime > 0 && weight > 0 ? <strong>{Math.floor(CalcPower(unit, weight, benchmarkTime, total_elevation_gain) * benchmarkTime / 1000)} KJ</strong> : `N/A`}</p>
-
+            <p>Training Zone: {benchmarkTime > 0 && weight > 0 && FTP > 0 ? <strong>{getTrainingZone(FTP, CalcPower(unit, weight, benchmarkTime, total_elevation_gain))}</strong> : 'N/A'}</p>
+            <p>TSS: {benchmarkTime > 0 && weight > 0 && FTP > 0 ? <strong>{CalcTSS(benchmarkTime, CalcPower(unit, weight, benchmarkTime, total_elevation_gain), FTP)}</strong> : 'N/A'}</p>
+            {/* ADD MESSAGE */}
           </div>
-
         )
     }
   }
