@@ -2,7 +2,7 @@ import { useState, useEffect } from "react"
 import { useParams } from "react-router-dom"
 import Container from "react-bootstrap/Container"
 import Row from "react-bootstrap/Row"
-import Col from "react-bootstrap/esm/Col"
+import Col from "react-bootstrap/Col"
 
 import SegmentTitle from "./SegmentTitle"
 import RadioButtons from "./RadioButtons"
@@ -28,6 +28,8 @@ const Segments = () => {
   let [ FTP, setFTP ] = useState(0)
   let [ interval, setInterval ] = useState(0)
   let [ trainingZone, setTrainingZone ] = useState(2)
+  let [ rangeLow, setRangeLow ] = useState(0)
+  let [ rangeHigh, setRangeHigh ] = useState(1)
 
   // For Plan Tab
   let [ goalTime, setGoalTime ] = useState(0)
@@ -71,7 +73,7 @@ const Segments = () => {
                 <SegmentUserWeight weight={weight} setWeight={setWeight} />  
               </Col>
               <Col xs={12} md={6}>
-                <SegmentTrainingZones trainingZone={trainingZone} setTrainingZone={setTrainingZone} FTP={FTP} />
+                <SegmentTrainingZones trainingZone={trainingZone} setTrainingZone={setTrainingZone} FTP={FTP} rangeLow={rangeLow} setRangeLow={setRangeLow} rangeHigh={rangeHigh} setRangeHigh={setRangeHigh} />
               </Col>
             </Row>
             <Row>
@@ -83,7 +85,7 @@ const Segments = () => {
               </Col>
             </Row>
             <Row>
-              <SegmentTrainingView  FTP={FTP} interval={interval} trainingZone={trainingZone} />
+              <SegmentTrainingView  FTP={FTP} interval={interval} trainingZone={trainingZone} weight={weight} rangeLow={rangeLow} rangeHigh={rangeHigh} unit={unit} segmentData={segmentData} />
             </Row>
           </Container>
         )
@@ -114,7 +116,6 @@ const Segments = () => {
   }
 
   if (segmentData) {
-    console.log(segmentData)
     const { end_latlng, start_latlng, map } = segmentData
 
     return (

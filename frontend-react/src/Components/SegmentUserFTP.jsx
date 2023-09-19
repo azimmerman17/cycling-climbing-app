@@ -13,7 +13,7 @@ const SegmentUserFTP = ({ FTP, setFTP }) => {
         aria-describedby="rider-FTP"
         type="number"
         min={0}
-        onChange={e => setFTP((e.target.value * 1)) }
+        onChange={e => setFTP(Number(e.target.value)) }
       />
       <InputGroup.Text id="rider-FTP-unit">W</InputGroup.Text>
     </InputGroup>

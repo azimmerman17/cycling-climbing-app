@@ -1,9 +1,7 @@
 const getTrainingZone = (FTP, power) => {
   let ratio = power / FTP
   let trainingZone
-  
-  console.log(power, FTP, ratio)
-  
+    
   if (ratio < .55 ) return trainingZone = 'Zone 1: Active Recovery'
   else if (ratio < .75) return trainingZone = 'Zone 2: Endurance'
   else if (ratio < .83) return trainingZone = 'Zone 3: Tempo'

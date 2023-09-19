@@ -23,7 +23,7 @@ const SegmentGoalTime = ({ goalTime, setGoalTime }) => {
         setSecond(s)
         break
     }
-    setGoalTime((h * 3600) + (m * 60) + (s * 1))
+    setGoalTime((h * 3600) + (m * 60) + (Number(s)))
   }
 
  return (

@@ -19,9 +19,9 @@ const SegmentPlan = ({ data, weight, goalTime, goalPower, goalSpeed, goalBenchma
   useEffect (() => {
     const stringTimeToSeconds = (string) => {
       let array = string.split(':')
-      if (array.length === 3) return (array[0] * 3600) + (array[1] * 60) + (array[2] * 1)
-      else if (array.length === 2) return (array[0] * 60) + (array[1] * 1)
-      else if (array.length === 1) return (array[0] * 1)
+      if (array.length === 3) return (array[0] * 3600) + (array[1] * 60) + (Number(array[2]))
+      else if (array.length === 2) return (array[0] * 60) + (Number(array[1]))
+      else if (array.length === 1) return Number(array[0])
       else {
         console.log('Error: Invalid Time')
         return 0

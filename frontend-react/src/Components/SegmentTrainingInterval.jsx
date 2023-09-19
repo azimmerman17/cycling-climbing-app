@@ -22,7 +22,7 @@ const SegmentTrainingInverval = ({ interval, setInterval }) => {
         setSecond(s)
         break
     }
-    setInterval((h * 3600) + (m * 60) + (s * 1))
+    setInterval((h * 3600) + (m * 60) + (Number(s)))
   }
 
  return (

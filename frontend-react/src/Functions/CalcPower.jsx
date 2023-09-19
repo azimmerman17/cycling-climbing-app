@@ -1,4 +1,4 @@
-const CalcPower = (unit, weight, time, total_elevation_gain ) => {
+const CalcPower = (unit, weight, time, total_elevation_gain) => {
   if (unit !== 'Metric') weight = (weight * 0.453592)
   weight += 9.07185
 

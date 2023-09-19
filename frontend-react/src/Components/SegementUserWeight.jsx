@@ -17,7 +17,7 @@ const SegmentUserWeight = ({ weight, setWeight, unit }) => {
           aria-describedby="rider-weight"
           type="number"
           min={0}
-          onChange={e => setWeight((e.target.value * 1)) }
+          onChange={e => setWeight((Number(e.target.value)))}
         />
         <InputGroup.Text id="rider-weight-unit">{localUnit}</InputGroup.Text>
       </InputGroup>

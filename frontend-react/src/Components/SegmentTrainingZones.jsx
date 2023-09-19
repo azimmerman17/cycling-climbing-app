@@ -1,44 +1,41 @@
 import Container from "react-bootstrap/Container"
 import Dropdown from 'react-bootstrap/Dropdown';
 
-const SegmentTrainingZones = ({ trainingZone, setTrainingZone, FTP }) => {
-  let message
-  let rangeLow
-  let rangeHigh
+const SegmentTrainingZones = ({ trainingZone, setTrainingZone, FTP, rangeLow, setRangeLow, rangeHigh, setRangeHigh }) => {
 
   const displayZone = (zone) => {
     switch (zone) {
       case 1:
-        rangeLow = 0
-        rangeHigh = .55
+        setRangeLow(.01)
+        setRangeHigh(.55)
         return 'Zone 1: Active Recovery'
       case 2: 
-        rangeLow = .55
-        rangeHigh = .75
+        setRangeLow(.55)
+        setRangeHigh(.75)
         return 'Zone 2: Endurance'
       case 3: 
-        rangeLow = .75
-        rangeHigh = .90
+        setRangeLow(.75)
+        setRangeHigh(.90)
         return 'Zone 3: Tempo'
       case 3.5:
-        rangeLow = .83
-        rangeHigh = .97
+        setRangeLow(.83)
+        setRangeHigh(.97)
         return 'Sweet Spot'
       case 4:
-        rangeLow = .90
-        rangeHigh = 1.05
+        setRangeLow(.90)
+        setRangeHigh(1.05)
         return 'Zone 4: Lactate Threshold'
       case 5:
-        rangeLow = 1.05
-        rangeHigh = 1.20
+        setRangeLow(1.05)
+        setRangeHigh(1.20)
         return 'Zone 5: VO2 Max'
       case 6:
-        rangeLow = 1.20
-        rangeHigh = 1.50
+        setRangeLow(1.20)
+        setRangeHigh(1.50)
         return 'Zone 6: Anaerobic Capacity'
       case 7:
-        rangeLow = 1.50
-        rangeHigh = '∞'
+        setRangeLow(1.50)
+        setRangeHigh('∞')
         return 'Zone 7: Neuromuscular Power'
     }
   }
@@ -61,7 +58,7 @@ const SegmentTrainingZones = ({ trainingZone, setTrainingZone, FTP }) => {
           <Dropdown.Item onClick={e => setTrainingZone(7)}>Zone 7: Neuromuscular Power </Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
-      <p>Target Power Range (W): {(FTP * rangeLow).toFixed(0)} - {rangeHigh === '∞' ? '∞' : (FTP * rangeHigh).toFixed(0)}</p>
+      <p>Target Power Range (W): {(FTP * rangeLow).toFixed(0)} ({(rangeLow * 100).toFixed(0)}%) - {rangeHigh === '∞' ? '∞' : `${(FTP * rangeHigh).toFixed(0)} (${(100 * rangeHigh).toFixed(0)}%)`}</p>
     </Container>
   )
 }

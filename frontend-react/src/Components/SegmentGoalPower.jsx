@@ -4,7 +4,6 @@ import InputGroup from 'react-bootstrap/InputGroup';
 
 const SegmentGoalPower = ({ goalPower, setGoalPower }) => {
 
-  console.log(goalPower)
   return (
     <Container className='tile' fluid='md'>
       <InputGroup className="mb-3" >
@@ -14,7 +13,7 @@ const SegmentGoalPower = ({ goalPower, setGoalPower }) => {
           aria-describedby="rider-goal-power"
           type="number"
           min={0}
-          onChange={e => setGoalPower(e.target.value * 1) }
+          onChange={e => setGoalPower(Number(e.target.value))}
         />
         <InputGroup.Text id="rider-power-unit">W</InputGroup.Text>
       </InputGroup>

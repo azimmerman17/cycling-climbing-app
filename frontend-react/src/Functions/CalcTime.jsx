@@ -1,7 +1,3 @@
-import Container from "react-bootstrap/Container"
-
-import TimeConvSec from '../Functions/TimeConvSec'
-
 const CalcTime = (unit, weight, power, total_elevation_gain) => {
   //  TIME FORUMLA !!!! 
   // t = 9.8067 * kg * m / W (+ 0% to 10%) Resistance
