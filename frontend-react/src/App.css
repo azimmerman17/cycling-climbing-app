@@ -43,7 +43,7 @@
 }
 
 .starred {
-  color: gold
+  color: gold;
 }
 
 .App {
@@ -55,7 +55,7 @@
   padding: .5em;
   margin: 1em;
   border-radius: 1em;
-  box-shadow: 0 .5rem 1rem rgb(0,0,0,.15)
+  box-shadow: 0 .5rem 1rem rgb(0,0,0,.15);
 }
 
 .font-small {
@@ -88,5 +88,16 @@
 }
 
 .disclaimer {
-  font-size: 12px
+  font-size: 12px;
+}
+
+#connect-strava {
+  position: relative;
+  float: right;
+  background-color: #fc4c01;
+}
+
+#footer {
+  background-color: #212529;
+  color: #fff;
 }
