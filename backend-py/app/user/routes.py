@@ -1,17 +1,31 @@
 from flask import redirect, request, url_for
+from flask_cors import CORS
+from datetime import datetime, timedelta
+from sqlalchemy import text
+from app.extensions import db, localStorage
+import requests
+
+import jwt
 
 from app.user import bp
 from config import Config
 
-segment_url = "https://www.strava.com/api/v3/segments/"
+user_url = 'https://www.strava.com/api/v3/athlete'
 
 @bp.route('/')
 def index(config_class=Config):
   return 'Testing the segemnt bp'
 
-@bp.route('/db/<int:id>')
-def db_users(id, config_class=Config):
+@bp.route('/<int:id>', methods=['POST'])
+def get_user(id, config_class=Config):
   return f'{id}'
+
+
+@bp.route('/currentuser', methods=['POST'])
+def current_user(config_class=Config):
+  if Config.CURRENT_USER:
+    return Config.CURRENT_USER
+  else: return None
 
 @bp.route('/strava/<int:id>')
 def api_users(id, config_class=Config):

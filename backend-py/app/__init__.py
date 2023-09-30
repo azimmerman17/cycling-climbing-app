@@ -1,13 +1,14 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
+
 import json
 
 from config import Config
 from app.extensions import db, JsonModel
 from app.functions import to_dict
-from app.models import users, strava_users 
+from app.models import user
 
 def create_app(config_class=Config):
   app = Flask(__name__)
@@ -16,12 +17,11 @@ def create_app(config_class=Config):
 
   # Initialize Flask extensions here
   db.init_app(app)
-  CORS(app, resources=r'/*')
+  CORS(app, resources={r'/*': {"origins": "*"}})
 
   # migrate models
-  from app.models import users, strava_users
-  Migrate(app,users.db)
-  Migrate(app,strava_users.db)
+  from app.models import user
+  Migrate(app,user.db)
 
   # Register blueprints here
   from app.strava_auth import bp as strava_auth_bp
