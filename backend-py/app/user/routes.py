@@ -26,6 +26,8 @@ def current_user(config_class=Config):
   try: return Config.CURRENT_USER
   except: return None
 
-@bp.route('/strava/<int:id>')
-def api_users(id, config_class=Config):
-  return f'{id}'
+@bp.route('/clear')
+def logout(config_class=Config):
+  Config.USER_ID = None
+  Config.CURRENT_USER = None
+  return redirect(f'http://localhost:3000/')

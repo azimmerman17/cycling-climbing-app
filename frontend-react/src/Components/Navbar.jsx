@@ -1,5 +1,8 @@
 import Container from 'react-bootstrap/Container'
 import Navbar from 'react-bootstrap/Navbar'
+import Dropdown from 'react-bootstrap/Dropdown';
+import DropdownButton from 'react-bootstrap/DropdownButton';
+import SplitButton from 'react-bootstrap/SplitButton';
 import { BiCycling } from 'react-icons/bi'
 import { FaMountain } from 'react-icons/fa'
 import Image from 'react-bootstrap/Image';
@@ -16,8 +19,6 @@ const NavBar = () => {
   if (window.innerWidth < 600) buttonWidth = '100px'
   else buttonWidth = '150px'
 
-  console.log('NAV', currentUser)
-
   const handleLogin = async (e) => {
     e.preventDefault()
 
@@ -28,12 +29,43 @@ const NavBar = () => {
     window.location = `http://www.strava.com/oauth/authorize?client_id=52719&response_type=${responseType}&redirect_uri=${redirectUri}&approval_prompt=force&scope=${scope}`
   }
 
+  const handleLogout = async (e) => {
+    let response = await fetch(`http://localhost:8080/user/clear`, {
+          mode: 'cors'
+        })
+    
+  }
+
   const stravaConnection = (user) => {
     if (user) {
       // build out later
       const { profile_pic_medium } = user
 
-      return <Image style={{maxHeight: '40px' }} className='m-0' src={`http://${profile_pic_medium}`} alt='Welcome' roundedCircle />
+      return (
+        <Dropdown data-bs-theme="dark">
+          <DropdownButton
+            align={'end'}
+            key={'end'}
+            title={
+              <Image style={{maxHeight: '40px' }} className='m-0' src={`http://${profile_pic_medium}`} alt='Welcome' roundedCircle />
+            }
+            className='p-0 m-0'
+            variant='dark'
+            size='sm'
+          >
+            <Dropdown.Item href="/profile">
+              <small>
+                Profile
+              </small>
+            </Dropdown.Item>
+            <Dropdown.Item href="/" onClick={e => handleLogout(e)}>
+              <small>
+                Logout
+              </small>
+            </Dropdown.Item>
+          </DropdownButton>
+        </Dropdown>
+      )    
     } else if (user === null) { 
       return (
         <Button id='connect-strava' className='border-0 m-0 p-0' onClick={e => handleLogin(e)}>
