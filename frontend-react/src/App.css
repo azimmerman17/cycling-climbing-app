@@ -101,3 +101,11 @@
   background-color: #212529;
   color: #fff;
 }
+
+.main-height {
+  min-height: 85vh;
+}
+
+.nav-height {
+  min-height: 5vh;
+}

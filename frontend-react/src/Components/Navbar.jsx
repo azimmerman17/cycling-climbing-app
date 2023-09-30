@@ -1,8 +1,9 @@
 import Container from 'react-bootstrap/Container'
 import Navbar from 'react-bootstrap/Navbar'
+import Nav from 'react-bootstrap/Nav';
+import NavDropdown from 'react-bootstrap/NavDropdown';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
-import SplitButton from 'react-bootstrap/SplitButton';
 import { BiCycling } from 'react-icons/bi'
 import { FaMountain } from 'react-icons/fa'
 import Image from 'react-bootstrap/Image';
@@ -38,45 +39,20 @@ const NavBar = () => {
 
   const stravaConnection = (user) => {
     if (user) {
-      // build out later
-      const { profile_pic_medium } = user
-
       return (
-        <Dropdown data-bs-theme="dark">
-          <DropdownButton
-            align={'end'}
-            key={'end'}
-            title={
-              <Image style={{maxHeight: '40px' }} className='m-0' src={`http://${profile_pic_medium}`} alt='Welcome' roundedCircle />
-            }
-            className='p-0 m-0'
-            variant='dark'
-            size='sm'
-          >
-            <Dropdown.Item href="/profile">
-              <small>
-                Profile
-              </small>
-            </Dropdown.Item>
-            <Dropdown.Item href="/" onClick={e => handleLogout(e)}>
-              <small>
-                Logout
-              </small>
-            </Dropdown.Item>
-          </DropdownButton>
-        </Dropdown>
+        <Nav.Link href='/profile' onClick={e => handleLogout(e)}>Logout</Nav.Link>
       )    
     } else if (user === null) { 
       return (
-        <Button id='connect-strava' className='border-0 m-0 p-0' onClick={e => handleLogin(e)}>
-          <Image  style={{width: buttonWidth}} className='m-0' src={ConnectStrava} alt='Connect with Strava' rounded />
-        </Button>
+          <Button id='connect-strava' className='border-0 m-0 p-0' onClick={e => handleLogin(e)}>
+            <Image  style={{width: buttonWidth}} className='m-0' src={ConnectStrava} alt='Connect with Strava' rounded />
+          </Button>
       )
     }
   }
 
   return (
-    <Navbar bg="dark" variant="dark">
+    <Navbar bg="dark" variant="dark" className='nav-height' collapseOnSelect expand="md">
       <Container>
         <Navbar.Brand href="/">
           <BiCycling className='climb-logo'/>
@@ -85,7 +61,15 @@ const NavBar = () => {
           Cycling Climbs
         </span>
         </Navbar.Brand>
-        {stravaConnection(currentUser)}
+        <Navbar.Toggle aria-controls="basic-navbar-nav" />
+        <Navbar.Collapse id="basic-navbar-nav">
+          <Nav>
+            <Nav.Link href='/segment'>Segments</Nav.Link>
+            <Nav.Link href='/profile'>Profile</Nav.Link>
+            {stravaConnection(currentUser)}
+          </Nav>
+        </Navbar.Collapse>
+        
       </Container>
     </Navbar>
   

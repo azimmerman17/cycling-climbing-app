@@ -128,9 +128,11 @@ def strava_redirect(config_class=Config):
   profile_pic_medium = profile['profile_medium'][8:]
   sex = profile['sex']
   username = profile['username']
-  username = f"'{username}'" if username != None else 'null'
   weight = profile['weight']
 
+  if prefer_units == 'feet': prefer_units = 'Imperial'
+  else: prefer_units = 'Metric'
+  username = f"'{username}'" if username != None else 'null'
 
   foundUser = None
   try:
@@ -142,7 +144,7 @@ def strava_redirect(config_class=Config):
 
     if foundUser != None:
       update_query = text(
-        f"UPDATE public.\"user\" SET first_name = '{first_name}', last_name = '{last_name}', premium = {premium}, profile_pic = '{profile_pic}', profile_pic_medium = '{profile_pic_medium}', sex = '{sex}',  username = {username}, weight = {weight}, strava_access_token = '{encoded_access_token}', strava_refresh_token = '{encoded_refresh_token}', updated_at = NOW()\
+        f"UPDATE public.\"user\" SET first_name = '{first_name}', last_name = '{last_name}', premium = {premium}, profile_pic = '{profile_pic}', profile_pic_medium = '{profile_pic_medium}', sex = '{sex}',  username = {username}, weight = {weight}, strava_access_token = '{encoded_access_token}', strava_refresh_token = '{encoded_refresh_token}', updated_at = NOW(), prefer_units='{prefer_units}, ftp='{ftp}''\
         WHERE strava_id = '{strava_id}';"
 
       )
@@ -152,8 +154,8 @@ def strava_redirect(config_class=Config):
     else:
       print('No User Found')
       query = text(
-        f"INSERT INTO public.\"user\" (strava_id, first_name, last_name, premium, profile_pic, profile_pic_medium, sex, username, weight, prefer_units, strava_access_token, strava_refresh_token, strava_token_type, updated_at, created_at)\
-        VALUES ({strava_id}, '{first_name}', '{last_name}', {premium}, '{profile_pic}', '{profile_pic_medium}', '{sex}', {username}, {weight}, 'Metric', '{encoded_access_token}', '{encoded_refresh_token}', 'Bearer', NOW(), NOW());"
+        f"INSERT INTO public.\"user\" (strava_id, first_name, last_name, premium, profile_pic, profile_pic_medium, sex, username, weight, prefer_units, ftp, strava_access_token, strava_refresh_token, strava_token_type, updated_at, created_at)\
+        VALUES ({strava_id}, '{first_name}', '{last_name}', {premium}, '{profile_pic}', '{profile_pic_medium}', '{sex}', {username}, {weight}, '{prefer_units}', '{ftp}', '{encoded_access_token}', '{encoded_refresh_token}', 'Bearer', NOW(), NOW());"
       )
       connection.execute(query)
   except:
@@ -170,6 +172,7 @@ def strava_redirect(config_class=Config):
     'profile_pic': profile_pic,
     'profile_pic_medium': profile_pic_medium,
     'sex': sex,
+    'prefer_units': prefer_units,
     'username': username if username == 'null' else None,
     'weight': weight, 
     'ftp': ftp,

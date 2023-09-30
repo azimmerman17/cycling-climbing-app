@@ -9,20 +9,21 @@ import CurrentUserProvider from './Context/CurrentUser';
 
 
 const App = () => {
-  console.log(localStorage)
+  let pageHeight = window.innerHeight - 2 * 56
+  console.log(pageHeight)
 
   return (
     <div className="App">
       <CurrentUserProvider >
         <Router>
             <NavBar />
-            <Routes>
-              {/* <Route exact path='/' element={<Home />} />  */}
-              {/* <Route path='/segment' element={<Segments />} /> */}
-              <Route path='/segment/:segmentId' element={<Segment />} />
-              <Route path='/profile' element={<Profile />} />
+              <Routes>
+                {/* <Route exact path='/' element={<Home />} />  */}
+                {/* <Route path='/segment' element={<Segments />} /> */}
+                <Route path='/segment/:segmentId' element={<Segment />} />
+                <Route path='/profile' element={<Profile />} />
 
-            </Routes>
+              </Routes>
             <Footer />
         </Router>
       </CurrentUserProvider>
