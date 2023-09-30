@@ -23,9 +23,8 @@ def get_user(id, config_class=Config):
 
 @bp.route('/currentuser', methods=['POST'])
 def current_user(config_class=Config):
-  if Config.CURRENT_USER:
-    return Config.CURRENT_USER
-  else: return None
+  try: return Config.CURRENT_USER
+  except: return None
 
 @bp.route('/strava/<int:id>')
 def api_users(id, config_class=Config):

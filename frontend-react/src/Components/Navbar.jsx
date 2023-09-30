@@ -11,7 +11,7 @@ import { CurrentUser } from "../Context/CurrentUser"
 
 const NavBar = () => {
   const { currentUser } = useContext(CurrentUser)
-    //styling for login button, depending on window size
+  // styling for login button, depending on window size
   let buttonWidth
   if (window.innerWidth < 600) buttonWidth = '100px'
   else buttonWidth = '150px'
@@ -34,7 +34,7 @@ const NavBar = () => {
       const { profile_pic_medium } = user
 
       return <Image style={{maxHeight: '40px' }} className='m-0' src={`http://${profile_pic_medium}`} alt='Welcome' roundedCircle />
-    } else if (user = null) { 
+    } else if (user === null) { 
       return (
         <Button id='connect-strava' className='border-0 m-0 p-0' onClick={e => handleLogin(e)}>
           <Image  style={{width: buttonWidth}} className='m-0' src={ConnectStrava} alt='Connect with Strava' rounded />
