@@ -141,13 +141,12 @@ def strava_redirect(config_class=Config):
       WHERE strava_id = '{strava_id}'"
     )
     foundUser = connection.execute(query).first()
-
     if foundUser != None:
       update_query = text(
-        f"UPDATE public.\"user\" SET first_name = '{first_name}', last_name = '{last_name}', premium = {premium}, profile_pic = '{profile_pic}', profile_pic_medium = '{profile_pic_medium}', sex = '{sex}',  username = {username}, weight = {weight}, strava_access_token = '{encoded_access_token}', strava_refresh_token = '{encoded_refresh_token}', updated_at = NOW(), prefer_units='{prefer_units}, ftp='{ftp}''\
-        WHERE strava_id = '{strava_id}';"
-
+        f"UPDATE public.\"user\" SET first_name = '{first_name}', last_name = '{last_name}', premium = {premium}, profile_pic = '{profile_pic}', profile_pic_medium = '{profile_pic_medium}', sex = '{sex}',  username = {username}, weight = {weight}, strava_access_token = '{encoded_access_token}', strava_refresh_token = '{encoded_refresh_token}', updated_at = NOW(), prefer_units='{prefer_units}', ftp={ftp}\
+        WHERE strava_id = {strava_id};"
       )
+      print(update_query)
       connection.execute(update_query)
 
     # if no user - create the profile

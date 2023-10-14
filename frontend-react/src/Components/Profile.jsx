@@ -14,8 +14,16 @@ const Profile = () => {
   const { currentUser } = useContext(CurrentUser)
 
   let buttonWidth
-  if (window.innerWidth < 600) buttonWidth = '200px'
-  else buttonWidth = '250px'
+  let profileWidth
+  if (window.innerWidth < 600) {
+    buttonWidth = '200px'
+    profileWidth = '100px'
+  }
+  else {
+    buttonWidth = '250px'
+    profileWidth = '150px'
+
+  }
 
   const handleLogin = async (e) => {
     e.preventDefault()
@@ -45,22 +53,25 @@ const Profile = () => {
   } else if (currentUser === undefined) return null
   else {
     const { first_name , ftp, last_name, profile_pic, sex, strava_id, weight, height, prefer_units } = currentUser
-    
+    let displayWeight = weight
+
+    if (prefer_units === 'Imperial') displayWeight = (weight * 2.21).toFixed(1)
+
     return (
-      <Container className='main-height p-3' >
+      <Container className='main-height p-3 text-center' >
         <Row className="m-3">
-          <Image style={{width: '50%', margin: 'auto'}}  src={`http://${profile_pic}`} alt="profile picture" roundedCircle/>
+          <Image style={{width: profileWidth, margin: 'auto'}}  src={`http://${profile_pic}`} alt="profile picture" roundedCircle/>
         </Row>
-        <Row>
+        <Row >
           <Col>{first_name && last_name ? <h5 className="text-center">{first_name} {last_name}</h5> : null}</Col>
         </Row>
-        <Row>
+        <Row className="justify-content-center">
           <Col xs={3} className="p-2 m-2 shadow rounded text-center">
             <h6>{ftp ? ftp : 'N/A'} W</h6>
             <small className="disclaimer">FTP</small>
           </Col>
           <Col  xs={3} className="p-2 m-2 shadow rounded text-center">
-            <h6>{weight ? weight.toFixed(1) : 'N/A'} {prefer_units === 'Imperial' ? 'lb' : 'kg'}</h6>
+            <h6>{displayWeight ? displayWeight : 'N/A'} {prefer_units === 'Imperial' ? 'lb' : 'kg'}</h6>
             <small className="disclaimer">WEIGHT</small>
           </Col>
           <Col xs={3} className="p-2 m-2 shadow rounded text-center">

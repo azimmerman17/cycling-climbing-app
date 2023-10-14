@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { useState, useEffect } from 'react';
 
 import './App.css';
 import NavBar from './Components/Navbar';
@@ -6,11 +7,12 @@ import Segment from './Components/Segment';
 import Footer from './Components/Footer';
 import Profile from './Components/Profile';
 import CurrentUserProvider from './Context/CurrentUser';
+import SegmentList from './Components/SegmentList';
 
 
 const App = () => {
+  let [segmentList, setSegmentList] = useState()
   let pageHeight = window.innerHeight - 2 * 56
-  console.log(pageHeight)
 
   return (
     <div className="App">
@@ -19,7 +21,7 @@ const App = () => {
             <NavBar />
               <Routes>
                 {/* <Route exact path='/' element={<Home />} />  */}
-                {/* <Route path='/segment' element={<Segments />} /> */}
+                <Route path='/segment' element={<SegmentList />}  />
                 <Route path='/segment/:segmentId' element={<Segment />} />
                 <Route path='/profile' element={<Profile />} />
 

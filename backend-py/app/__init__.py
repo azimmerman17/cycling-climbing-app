@@ -8,7 +8,7 @@ import json
 from config import Config
 from app.extensions import db, JsonModel
 from app.functions import to_dict
-from app.models import user
+from app.models import user, segment_list
 
 def create_app(config_class=Config):
   app = Flask(__name__)
@@ -20,8 +20,9 @@ def create_app(config_class=Config):
   CORS(app, resources={r'/*': {"origins": "*"}})
 
   # migrate models
-  from app.models import user
+  from app.models import user, segment_list
   Migrate(app,user.db)
+  Migrate(app, segment_list.db)
 
   # Register blueprints here
   from app.strava_auth import bp as strava_auth_bp
