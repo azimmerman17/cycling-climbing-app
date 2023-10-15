@@ -17,8 +17,7 @@ const SegmentRequest = () => {
 
   let [ id, setId ] = useState(searchParams.get("id"))
   let [ segmentData, setSegmentData ] = useState(null)
-  let [ alert, setAlert ] = useState(null)
-  let filter = false
+  let [ alert, setAlert ] = useState({msg: null, state: 2})
   
   useEffect(() => {
     const fetchSegment = async (id) => {
@@ -28,38 +27,44 @@ const SegmentRequest = () => {
       let data = await response.json()
       if (data.message) data = null
       setSegmentData(data)
-      console.log(data)
-      if (data) {
-        let alertList = []
-        const { activity_type, average_grade, hazardous, start_latlng, end_latlng, distance } = data
-        if (activity_type === 'Run') alertList.push('Segment is not a cycling segment')
-        if (data.private) alertList.push('Segment set to Private')
-        if (average_grade < 0) alertList.push('Segment is downhill')
-        if (hazardous) alertList.push('Segment is hazardous')
-        let deltaLocation = GetDistanceFromLatLonInKm(start_latlng[0], start_latlng[1], end_latlng[0], end_latlng[1]) * 1000
-
-        if (alertList.length > 0) {
-          setAlert({
-            msg: alertList.toString(),
-            state: 2
-          })
-          filter = true
-        } else if (deltaLocation / distance < .05 ) {
-          setAlert({
-            msg: 'Segment may be a loop',
-            state: 1
-          })
-        } else {
-          setAlert(null)
-          filter = false
-        }
-      }
+      if (data) checkAlert(data)
+      else setAlert({msg: null, state: 2})
     }
+
+    const checkAlert = (data) => {
+      const { activity_type, average_grade, hazardous, start_latlng, end_latlng, distance } = data
+      let alertList = []
+      if (activity_type === 'Run') alertList.push('Segment is not a cycling segment')
+      if (data.private) alertList.push('Segment set to Private')
+      if (average_grade < 0) alertList.push('Segment is downhill')
+      if (hazardous) alertList.push('Segment is hazardous')
+      let deltaLocation = GetDistanceFromLatLonInKm(start_latlng[0], start_latlng[1], end_latlng[0], end_latlng[1]) * 1000
+    console.log(alertList)
+    if (alertList.length > 0) {
+      setAlert({
+        msg: alertList.toString(),
+        state: 2
+      })
+      console.log(alert)
+    } else if (deltaLocation / distance < .05 ) {
+      setAlert({
+        msg: 'Segment may be a loop',
+        state: 1
+      })
+    } else {
+      setAlert({msg: null, state: 0})
+    }
+  }
+
 
     if (id) {
       setSegmentData(null)
       fetchSegment(id)
     }
+    // if (segmentData) {
+    //   checkAlert(segmentData)
+    //   console.log(alert)
+    // }
   }, [id])
 
   const getSegmentData = (data) => {
@@ -84,8 +89,9 @@ const SegmentRequest = () => {
   }
 
   const showAlert = (alert) => {
-    if (alert) {
-      const { state, msg } = alert
+    const { state, msg } = alert
+
+    if (msg !== null) {
       let variant
       switch (state) {
         case 0:
@@ -102,6 +108,7 @@ const SegmentRequest = () => {
     }
   }
 
+  console.log(alert)
   return (
     <Container className='tile main-height' fluid='md'>
       {showAlert(alert)}
@@ -117,7 +124,7 @@ const SegmentRequest = () => {
               type="number"
               onChange={e => setId(e.target.value)}
             />
-            <Button className='' onClick={e => handleSubmit(id)} disabled={!segmentData || filter}>
+            <Button className='' onClick={e => handleSubmit(id)} disabled={!segmentData || alert.state === 2}>
               Submit
             </Button>
           </InputGroup>
