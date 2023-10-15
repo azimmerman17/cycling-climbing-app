@@ -8,11 +8,11 @@ import Footer from './Components/Footer';
 import Profile from './Components/Profile';
 import CurrentUserProvider from './Context/CurrentUser';
 import SegmentList from './Components/SegmentList';
+import SegmentRequest from './Components/SegmentRequest';
 
 
 const App = () => {
   let [segmentList, setSegmentList] = useState()
-  let pageHeight = window.innerHeight - 2 * 56
 
   return (
     <div className="App">
@@ -23,6 +23,7 @@ const App = () => {
                 {/* <Route exact path='/' element={<Home />} />  */}
                 <Route path='/segment' element={<SegmentList />}  />
                 <Route path='/segment/:segmentId' element={<Segment />} />
+                <Route path='/segment/request' element={<SegmentRequest />} />
                 <Route path='/profile' element={<Profile />} />
 
               </Routes>

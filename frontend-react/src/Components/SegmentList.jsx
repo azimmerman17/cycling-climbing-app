@@ -2,7 +2,7 @@
 const SegmentList =  ({}) => {
 
   return (
-    <div>
+    <div className='main-height'>
       Segment List
     </div>
   )
