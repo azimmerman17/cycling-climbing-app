@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState, useEffect, useContext } from "react"
 import { useParams } from "react-router-dom"
 import Container from "react-bootstrap/Container"
 import Row from "react-bootstrap/Row"
@@ -17,8 +17,12 @@ import SegmentTrainingInverval from "./SegmentTrainingInterval"
 import SegmentTrainingZones from "./SegmentTrainingZones"
 // import SegmentProfile from "./SegmentProfile"  // Later Build
 
+import { CurrentUser } from "../Context/CurrentUser"
+
 const Segments = () => {
   let { segmentId } = useParams()
+  const { currentUser } = useContext(CurrentUser)
+
   let [ segmentData, SetSegmentData ] = useState(null)
   let [ radioNme, setRadioNme ] = useState('Details')
   let [ unit, setUnit ] = useState('Imperial')
@@ -46,13 +50,21 @@ const Segments = () => {
       const data = await response.json()
       SetSegmentData(data)
     }
-
+    const setUserData = (user) => {
+      if (user.ftp) setFTP(user.ftp)
+      if (user.perfer_unit) setUnit(user.perfer_unit)
+      if (user.weight) {
+        if (unit === 'Imperial') setWeight((user.weight * 2.21).toFixed(1))
+        else setWeight(user.weight)
+      }
+    }
     if (segmentId) {
       fetchSegment(segmentId)
     }
-  }, [segmentId])
-
-
+    if (currentUser) {
+      setUserData(currentUser)
+    }
+  }, [segmentId, currentUser])
 
   let segmentRadios = [
     'Details',
