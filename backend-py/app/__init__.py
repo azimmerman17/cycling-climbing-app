@@ -34,6 +34,9 @@ def create_app(config_class=Config):
   from app.user import bp as user_bp
   app.register_blueprint(user_bp)
 
+  from app.process import bp as process_bp
+  app.register_blueprint(process_bp)
+
   @app.route('/test')
   def test_page():
     return '<h1>Testing the Flask Application Factory Pattern</h1>'

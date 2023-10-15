@@ -101,6 +101,7 @@ def strava_redirect(config_class=Config):
   res = requests.request("POST", url).json()
 
   access_token = res['access_token'] 
+  print(access_token)
   refresh_token = res['refresh_token']
 
   # encode tokens using jwt - Getting junk after number literal error
@@ -161,7 +162,6 @@ def strava_redirect(config_class=Config):
     print('SQL Error')
     if not access_token:
       return redirect(f'http://localhost:3000/')
-
 
   current_user = {
     'strava_id': strava_id,

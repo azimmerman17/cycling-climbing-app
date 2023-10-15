@@ -72,7 +72,10 @@ def segment_req(id, config_class=Config):
   found_segment = connection.execute(query).fetchone()
 
   if found_segment is not None:
-    return {'msg': 'Segement already Submitted'}
+    return {
+      'msg': 'Segement already Submitted',
+      'state': 1
+      }
   else:
     print('New segment')
     # Validate the segment exists in Strava
@@ -85,7 +88,10 @@ def segment_req(id, config_class=Config):
       response = requests.request("GET", f'{segment_url}{id}', headers=headers, data=payload).json()
     except:
       # error in segment request
-      return {'msg': 'Failed to validate Segment'}
+      return {
+        'msg': 'Failed to validate Segment',
+        'state': 2
+        }
     try:
       # return error message - if any 
       return response['message']
@@ -93,16 +99,25 @@ def segment_req(id, config_class=Config):
     # filter out requests that don't meet requiremets:
     # No private, downhill segments, hazardous, running Segments
       if response['private'] == True:
-        return {'msg': 'Segment set to Private'}
+        return {
+          'msg': 'Segment set to Private',
+          'state': 2
+          }
       elif response['average_grade'] < 0:
-        print(response['average_grade'])
-        return {'msg': 'Segment is downhill'}
+        return {
+          'msg': 'Segment is downhill',
+          'state': 2
+        }
       elif response['hazardous'] == True:
-        print(response['hazardous'])
-        return {'msg': 'Segment is hazarous'}
+        return {
+          'msg': 'Segment is hazarous',
+          'state': 2
+        }
       elif response['activity_type'] == 'Run':
-        print(response['activity_type'])
-        return {'msg': 'Segment is not a cycling segment'}
+        return {
+          'msg': 'Segment is not a cycling segment',
+          'state': 2
+        }
 
     # add to the DB
     try:
@@ -230,10 +245,16 @@ def segment_req(id, config_class=Config):
 
       #commit the db
       session.commit()
-      return {'msg': 'Segment Request Sent'}
+      return {
+        'msg': 'Segment Request Sent',
+        'state': 0
+        }
     except:
       session.rollback()
-      return {'msg': 'Segment Request Failed'}
+      return {
+        'msg': 'Segment Request Failed',
+        'state': 2
+        }
 
 # endpoint to approve a segment to be added
 @bp.route('approve/<int:id>')
@@ -250,8 +271,7 @@ def segment_approve(id, config_class=Config):
       """
     )
 
-
-    #exacute and commit the db
+    # exacute and commit the db
     connection.execute(query)
     session.commit()
     return {'msg': 'Segment Approved'}
@@ -273,8 +293,8 @@ def segment_reject(id, config_class=Config):
         WHERE segment_id = {id};
       """
     )
-    
-    #exacute and commit the db
+
+    # exacute and commit the db
     connection.execute(query)
     session.commit()
     return {'msg': 'Segment Rejected'}
@@ -282,26 +302,43 @@ def segment_reject(id, config_class=Config):
     session.rollback()
     return {'msg': 'Segment Rejection Failed'}
 
+@bp.route('/batch')
+def batch(config_class=Config):
+  # DB connection for SQL
+  session = db.session()
+  connection = session.connection()
+
+  # Get the access token
+  encoded_access_token = config_class.CURRENT_USER['access_token']
+  end = len(encoded_access_token) - len(config_class.SALT)
+  encoded_access_token = encoded_access_token[0:end]
+
+  decoded_access_token = jwt.decode(encoded_access_token, config_class.SECRET_KEY, algorithms=["HS256"])
+  access_token = decoded_access_token['access_token']
+
+  # list of segment IDs
+  segment_ids = []
 
 
+  # while loop to get all segments
+  i = 1
+  flag = 0
+  while (flag == 0):
+    starred_segments = f'https://www.strava.com/api/v3/segments/starred?page={i}per_page=200'
+    try:
+      payload = {}
+      headers = {
+        'Authorization': f'Bearer {access_token}'
+      }
 
+      response = requests.request("GET", f'{starred_segments}', headers=headers, data=payload).json()
 
+      # just put the 
 
-
-
-
-
-
-  
-
-
-
-
-# Validate Segment
-
-# return 'Segment Found'
-
-# add segment to the Segment List table
-# insert_query = f"I"
-
-# send email for approval
+    except:
+      return {
+        'msg': 'Cannot connect to Strava',
+        'state': 2
+        }
+    
+  return response
