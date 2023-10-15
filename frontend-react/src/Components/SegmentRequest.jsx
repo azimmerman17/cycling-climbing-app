@@ -10,6 +10,7 @@ import Alert from 'react-bootstrap/Alert';
 
 import SegmentTitle from "./SegmentTitle";
 import SegmentMap from "./SegementMap";
+import GetDistanceFromLatLonInKm from "../Functions/GetDistanceFromLatLonInKm";
 
 const SegmentRequest = () => {
   const [ searchParams, setSearchParams ] = useSearchParams();
@@ -17,6 +18,7 @@ const SegmentRequest = () => {
   let [ id, setId ] = useState(searchParams.get("id"))
   let [ segmentData, setSegmentData ] = useState(null)
   let [ alert, setAlert ] = useState(null)
+  let filter = false
   
   useEffect(() => {
     const fetchSegment = async (id) => {
@@ -26,9 +28,36 @@ const SegmentRequest = () => {
       let data = await response.json()
       if (data.message) data = null
       setSegmentData(data)
+      console.log(data)
+      if (data) {
+        let alertList = []
+        const { activity_type, average_grade, hazardous, start_latlng, end_latlng, distance } = data
+        if (activity_type === 'Run') alertList.push('Segment is not a cycling segment')
+        if (data.private) alertList.push('Segment set to Private')
+        if (average_grade < 0) alertList.push('Segment is downhill')
+        if (hazardous) alertList.push('Segment is hazardous')
+        let deltaLocation = GetDistanceFromLatLonInKm(start_latlng[0], start_latlng[1], end_latlng[0], end_latlng[1]) * 1000
+
+        if (alertList.length > 0) {
+          setAlert({
+            msg: alertList.toString(),
+            state: 2
+          })
+          filter = true
+        } else if (deltaLocation / distance < .05 ) {
+          setAlert({
+            msg: 'Segment may be a loop',
+            state: 1
+          })
+        } else {
+          setAlert(null)
+          filter = false
+        }
+      }
     }
 
     if (id) {
+      setSegmentData(null)
       fetchSegment(id)
     }
   }, [id])
@@ -88,7 +117,7 @@ const SegmentRequest = () => {
               type="number"
               onChange={e => setId(e.target.value)}
             />
-            <Button className='' onClick={e => handleSubmit(id)} disabled={!segmentData}>
+            <Button className='' onClick={e => handleSubmit(id)} disabled={!segmentData || filter}>
               Submit
             </Button>
           </InputGroup>
