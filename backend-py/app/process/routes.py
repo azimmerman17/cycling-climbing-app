@@ -6,7 +6,7 @@ from sqlalchemy import text
 from app.process import bp
 from config import Config
 from app.extensions import db
-from app.functions import get_new_AT, add_new_segment
+from app.functions import get_new_AT, add_new_segment, get_segment,  send_request_email
 
 # list of required urls for api calls
 starred_segments = 'https://www.strava.com/api/v3/segments/starred'
@@ -71,4 +71,52 @@ def add_starred_segments(config_class=Config):
     'msg': 'Process Complete',
     'new segments': new_segments
     }
+
+@bp.route('/open_requests')
+def open_requests(config_class=Config):
+  # DB connection for SQL
+  session = db.session()
+  connection = session.connection()
+
+  # intiating a list of segments
+  segment_list = []
+  failed_segments = []
+
+  # get the unreviewed segments from the segment list
+  query = text(f"""
+    SELECT segment_id, approval FROM public.\"segment_list\"
+    WHERE approval='under review'
+  """)
+
+  found_segments = connection.execute(query)
+
+  for row in found_segments:
+    segment_list.append(row[0])
+
+  if len(segment_list) > 0:
+    access_token = get_new_AT(Config.BATCH_REFRESH_TOKEN)
+
+    for record in segment_list:
+      # get data for the segments
+      segment = get_segment(record, access_token)
+
+      # Translate the climb catagory value
+      if segment['climb_category'] == 0:
+        segment['climb_category'] = 'UC'
+      elif segment['climb_category'] == 5:
+        segment['climb_category'] = 'HC'
+      else:
+        segment['climb_category'] = 5 -  segment['climb_category']
+
+      try:
+        send_request_email(segment)
+      except:
+        failed_segments.append(record)
+
+  return {
+    'msg': 'Segment requests sent',
+    '#requests': len(segment_list) - len(failed_segments)
+  }
+
+
 

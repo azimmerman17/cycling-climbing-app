@@ -19,7 +19,6 @@ segment_url = "https://www.strava.com/api/v3/segments/"
 
 @bp.route('/<id>')
 def segment(id, config_class=Config):
-  import requests
 
   # Get the access token
   encoded_access_token = config_class.CURRENT_USER['access_token']
@@ -56,14 +55,6 @@ def segment_req(id, config_class=Config): # validate in strava, send to function
   session = db.session()
   connection = session.connection()
 
-  # Get the access token
-  encoded_access_token = config_class.CURRENT_USER['access_token']
-  end = len(encoded_access_token) - len(config_class.SALT)
-  encoded_access_token = encoded_access_token[0:end]
-
-  decoded_access_token = jwt.decode(encoded_access_token, config_class.SECRET_KEY, algorithms=["HS256"])
-  access_token = decoded_access_token['access_token']
-
   # check to see if its in the DB
   query = text(
     f"SELECT segment_id FROM public.\"segment_list\"\
@@ -80,12 +71,7 @@ def segment_req(id, config_class=Config): # validate in strava, send to function
     print('New segment')
     # Validate the segment exists in Strava
     try:
-      payload = {}
-      headers = {
-        'Authorization': f'Bearer {access_token}'
-      }
-
-      response = requests.request("GET", f'{segment_url}{id}', headers=headers, data=payload).json()
+      response = get_segment(id, config_class.CURRENT_USER['access_token'], encoded=True )
     except:
       # error in segment request
       return {
@@ -202,14 +188,14 @@ def segment_req(id, config_class=Config): # validate in strava, send to function
               <li>Segment Name: {response['name']}</li>
               <li>Segement ID: {id}</li>
               <li>Location: {response['city']}, {response['state']} {response['country']}</li>
-              <li>Distance: {math.trunc(response['distance'] / 1000)}km</li>
+              <li>Distance: {math.trunc(response['distance'] / 10) / 100}km</li>
               <li>Avg Grade: {response['average_grade']}%</li>
               <li>Max Grade: {response['maximum_grade']}%</li>
               <li>Elevation Gain: {math.trunc(response['total_elevation_gain'])}m</li>
-              <li>Elevation Low: {response['elevation_low']}</li>
-              <li>Elevation High: {response['elevation_high']}</li>
+              <li>Elevation Low: {response['elevation_low']}m</li>
+              <li>Elevation High: {response['elevation_high']}m</li>
               <li>Climb Category: {response['climb_category']}</li>
-              <li>Type: {response['activity_type']} - </li>
+              <li>Type: {response['activity_type']}</li>
               <li>Athlete Count: {response['athlete_count']}</li>
               <li>Hazardous: {response['hazardous']}</li>
             </ul>
